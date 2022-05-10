@@ -78,7 +78,6 @@ class GameFunctions final : LuaScriptInterface {
 
 				registerMethod(L, "Game", "reload", GameFunctions::luaGameReload);
 
-				registerMethod(L, "Game", "itemidHasMoveevent", GameFunctions::luaGameItemidHasMoveevent);
 				registerMethod(L, "Game", "hasDistanceEffect", GameFunctions::luaGameHasDistanceEffect);
 				registerMethod(L, "Game", "hasEffect", GameFunctions::luaGameHasEffect);
 				registerMethod(L, "Game", "getOfflinePlayer", GameFunctions::luaGameGetOfflinePlayer);
@@ -135,7 +134,6 @@ class GameFunctions final : LuaScriptInterface {
 			static int luaGameReload(lua_State* L);
 
 			static int luaGameGetOfflinePlayer(lua_State* L);
-			static int luaGameItemidHasMoveevent(lua_State* L);
 			static int luaGameHasEffect(lua_State* L);
 			static int luaGameHasDistanceEffect(lua_State* L);
 };

@@ -2290,7 +2290,7 @@ Item* Game::transformItem(Item* item, uint16_t newId, int32_t newCount /*= -1*/)
 					internalRemoveItem(item);
 					return nullptr;
 				} else if (newItemId != newId) {
-					//Replacing the the old item with the new while maintaining the old position
+					// Replacing the the old item with the new while maintaining the old position
 					Item* newItem = Item::CreateItem(newItemId, 1);
 					if (newItem == nullptr) {
 						return nullptr;
@@ -5468,6 +5468,21 @@ void Game::changeSpeed(Creature* creature, int32_t varSpeedDelta)
 	map.getSpectators(spectators, creature->getPosition(), false, true);
 	for (Creature* spectator : spectators) {
 		spectator->getPlayer()->sendChangeSpeed(creature, creature->getStepSpeed());
+	}
+}
+
+void Game::changePlayerSpeed(Player& player, int32_t varSpeedDelta)
+{
+	int32_t varSpeed = player.getSpeed() - player.getBaseSpeed();
+	varSpeed += varSpeedDelta;
+
+	player.setSpeed(varSpeed);
+
+	//send to clients
+	SpectatorHashSet spectators;
+	map.getSpectators(spectators, player.getPosition(), false, true);
+	for (Creature* spectator : spectators) {
+		spectator->getPlayer()->sendChangeSpeed(&player, player.getStepSpeed());
 	}
 }
 
@@ -8728,11 +8743,6 @@ bool Game::reload(ReloadTypes_t reloadType)
 		}
 	}
 	return true;
-}
-
-bool Game::itemidHasMoveevent(uint32_t itemid)
-{
-	return g_moveEvents().isRegistered(itemid);
 }
 
 bool Game::hasEffect(uint8_t effectId) {

@@ -26,7 +26,6 @@
 #include "lua/functions/events/move_event_functions.hpp"
 #include "creatures/players/vocations/vocation.h"
 
-
 class MoveEvent;
 using MoveEvent_ptr = std::unique_ptr<MoveEvent>;
 
@@ -52,18 +51,90 @@ class MoveEvents final : public BaseEvents {
 			return instance;
 		}
 
-		uint32_t onCreatureMove(Creature* creature, const Tile* tile, MoveEvent_t eventType);
-		uint32_t onPlayerEquip(Player* player, Item* item, Slots_t slot, bool isCheck);
-		uint32_t onPlayerDeEquip(Player* player, Item* item, Slots_t slot);
-		uint32_t onItemMove(Item* item, Tile* tile, bool isAdd);
+		uint32_t onCreatureMove(Creature& creature, Tile& tile, MoveEvent_t eventType);
+		uint32_t onPlayerEquip(Player& player, Item& item, Slots_t slot, bool isCheck);
+		uint32_t onPlayerDeEquip(Player& player, Item& item, Slots_t slot);
+		uint32_t onItemMove(Item& item, Tile& tile, bool isAdd);
 
-		MoveEvent* getEvent(Item* item, MoveEvent_t eventType);
-
-		bool isRegistered(uint32_t itemid);
-
-		bool registerLuaEvent(MoveEvent* event);
-		bool registerLuaFunction(MoveEvent* event);
 		void clear(bool fromLua) override final;
+
+		std::map<Position, MoveEventList> getPositionsMap() const {
+			return positionsMap;
+		}
+
+		bool hasPosition(Position position) const {
+			if (auto it = positionsMap.find(position);
+			it != positionsMap.end())
+			{
+				return true;
+			}
+			return false;
+		}
+
+		void setPosition(Position position, MoveEventList moveEventList) {
+			positionsMap.try_emplace(position, moveEventList);
+		}
+
+		std::map<int32_t, MoveEventList> getItemIdMap() const {
+			return itemIdMap;
+		}
+
+		bool hasItemId(int32_t itemId) const {
+			if (auto it = itemIdMap.find(itemId);
+			it != itemIdMap.end())
+			{
+				return true;
+			}
+			return false;
+		}
+
+		void setItemId(int32_t itemId, MoveEventList moveEventList) {
+			itemIdMap.try_emplace(itemId, moveEventList);
+		}
+
+		std::map<int32_t, MoveEventList> getUniqueIdMap() const {
+			return uniqueIdMap;
+		}
+
+		bool hasUniqueId(int32_t uniqueId) const {
+			if (auto it = uniqueIdMap.find(uniqueId);
+			it != uniqueIdMap.end())
+			{
+				return true;
+			}
+			return false;
+		}
+
+		void setUniqueId(int32_t uniqueId, MoveEventList moveEventList) {
+			uniqueIdMap.try_emplace(uniqueId, moveEventList);
+		}
+
+		std::map<int32_t, MoveEventList> getActionIdMap() const {
+			return actionIdMap;
+		}
+
+		bool hasActionId(int32_t actionId) const {
+			if (auto it = actionIdMap.find(actionId);
+			it != actionIdMap.end())
+			{
+				return true;
+			}
+			return false;
+		}
+
+		void setActionId(int32_t actionId, MoveEventList moveEventList) {
+			actionIdMap.try_emplace(actionId, moveEventList);
+		}
+
+		MoveEvent* getEvent(Item& item, MoveEvent_t eventType);
+
+		bool registerLuaFunction(MoveEvent& moveEvent);
+		bool registerLuaItemEvent(MoveEvent& moveEvent);
+		bool registerLuaActionEvent(MoveEvent& moveEvent);
+		bool registerLuaUniqueEvent(MoveEvent& moveEvent);
+		bool registerLuaPositionEvent(MoveEvent& moveEvent);
+		bool registerLuaEvent(MoveEvent& event);
+		void clear();
 
 	private:
 		using MoveListMap = std::map<int32_t, MoveEventList>;
@@ -76,19 +147,16 @@ class MoveEvents final : public BaseEvents {
 		Event_ptr getEvent(const std::string& nodeName) override;
 		bool registerEvent(Event_ptr event, const pugi::xml_node& node) override;
 
-		void addEvent(MoveEvent moveEvent, int32_t id, MoveListMap& map);
+		void registerEvent(MoveEvent& moveEvent, int32_t id, MoveListMap& moveListMap);
+		void registerEvent(MoveEvent& moveEvent, const Position& position, MovePosListMap& moveListMap);
+		MoveEvent* getEvent(Tile& tile, MoveEvent_t eventType);
 
-		void addEvent(MoveEvent moveEvent, const Position& pos, MovePosListMap& map);
-		MoveEvent* getEvent(const Tile* tile, MoveEvent_t eventType);
-
-		MoveEvent* getEvent(Item* item, MoveEvent_t eventType, Slots_t slot);
+		MoveEvent* getEvent(Item& item, MoveEvent_t eventType, Slots_t slot);
 
 		MoveListMap uniqueIdMap;
 		MoveListMap actionIdMap;
 		MoveListMap itemIdMap;
-		MovePosListMap positionMap;
-
-		LuaScriptInterface scriptInterface;
+		MovePosListMap positionsMap;
 };
 
 constexpr auto g_moveEvents = &MoveEvents::getInstance;
@@ -107,18 +175,25 @@ class MoveEvent final : public Event {
 		bool configureEvent(const pugi::xml_node& node) override;
 		bool loadFunction(const pugi::xml_attribute& attr, bool isScripted) override;
 
-		uint32_t fireStepEvent(Creature* creature, Item* item, const Position& pos);
-		uint32_t fireAddRemItem(Item* item, Item* tileItem, const Position& pos);
-		uint32_t fireEquip(Player* player, Item* item, Slots_t slot, bool isCheck);
+		uint32_t fireStepEvent(Creature& creature, Item& item, const Position& pos);
+		// No have item
+		uint32_t fireStepEvent(Creature& creature, const Position& pos);
+		uint32_t fireAddRemItem(Item& item, Item& tileItem, const Position& pos);
+		uint32_t fireAddRemItem(Item& item, const Position& pos);
+		uint32_t fireEquip(Player& player, Item& item, Slots_t slot, bool isCheck);
 
 		uint32_t getSlot() const {
 			return slot;
 		}
 
-		//scripting
-		bool executeStep(Creature* creature, Item* item, const Position& pos);
-		bool executeEquip(Player* player, Item* item, Slots_t slot, bool isCheck);
-		bool executeAddRemItem(Item* item, Item* tileItem, const Position& pos);
+		// Scripting to lua interface
+		bool executeStep(Creature& creature, Item& item, const Position& pos);
+		// No have item
+		bool executeStep(Creature& creature, const Position& pos);
+		bool executeEquip(Player& player, Item& item, Slots_t slot, bool isCheck);
+		bool executeAddRemItem(Item& item, Item& tileItem, const Position& pos);
+		// No have tile item
+		bool executeAddRemItem(Item& item, const Position& pos);
 		//
 
 		//onEquip information
@@ -155,29 +230,29 @@ class MoveEvent final : public Event {
 		void setTileItem(bool b) {
 			tileItem = b;
 		}
-		std::vector<uint32_t> getItemIdRange() {
-			return itemIdRange;
+		std::vector<uint32_t> getItemIdsVector() {
+			return itemIdVector;
 		}
-		void addItemId(uint32_t id) {
-			itemIdRange.emplace_back(id);
+		void setItemId(uint32_t id) {
+			itemIdVector.emplace_back(id);
 		}
-		std::vector<uint32_t> getActionIdRange() {
-			return actionIdRange;
+		std::vector<uint32_t> getActionIdsVector() {
+			return actionIdVector;
 		}
-		void addActionId(uint32_t id) {
-			actionIdRange.emplace_back(id);
+		void setActionId(uint32_t id) {
+			actionIdVector.emplace_back(id);
 		}
-		std::vector<uint32_t> getUniqueIdRange() {
-			return uniqueIdRange;
+		std::vector<uint32_t> getUniqueIdsVector() {
+			return uniqueIdVector;
 		}
-		void addUniqueId(uint32_t id) {
-			uniqueIdRange.emplace_back(id);
+		void setUniqueId(uint32_t id) {
+			uniqueIdVector.emplace_back(id);
 		}
-		std::vector<Position> getPosList() {
-			return posList;
+		std::vector<Position> getPositionsVector() {
+			return positionVector;
 		}
-		void addPosList(Position pos) {
-			posList.emplace_back(pos);
+		void setPosition(Position pos) {
+			positionVector.emplace_back(pos);
 		}
 		void setSlot(uint32_t s) {
 			slot = s;
@@ -235,10 +310,12 @@ class MoveEvent final : public Event {
 		VocEquipMap vocEquipMap;
 		bool tileItem = false;
 
-		std::vector<uint32_t> itemIdRange;
-		std::vector<uint32_t> actionIdRange;
-		std::vector<uint32_t> uniqueIdRange;
-		std::vector<Position> posList;
+		std::vector<uint32_t> itemIdVector;
+		std::vector<uint32_t> actionIdVector;
+		std::vector<uint32_t> uniqueIdVector;
+		std::vector<Position> positionVector;
+
+		std::string fileName;
 };
 
 #endif  // SRC_LUA_CREATURE_MOVEMENT_H_
