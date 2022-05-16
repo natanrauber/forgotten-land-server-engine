@@ -21,169 +21,33 @@
 
 #include "game/game.h"
 #include "lua/creature/events.h"
-
-#include "utils/pugicast.h"
-
 #include "lua/creature/movement.h"
 #include "creatures/players/imbuements/imbuements.h"
 
 
-MoveEvents::MoveEvents() :
-	scriptInterface("MoveEvents Interface") {
-	scriptInterface.initState();
-}
-
-MoveEvents::~MoveEvents() {
-	clear(false);
-}
-
-void MoveEvents::clearMap(MoveListMap& map, bool fromLua) {
+void MoveEvents::clearMap(MoveListMap& map) {
 	for (auto it = map.begin(); it != map.end(); ++it) {
 		for (int eventType = MOVE_EVENT_STEP_IN; eventType < MOVE_EVENT_LAST; ++eventType) {
-			auto& moveEvents = it->second.moveEvent[eventType];
-			for (auto find = moveEvents.begin(); find != moveEvents.end(); ) {
-				if (fromLua == find->fromLua) {
-					find = moveEvents.erase(find);
-				} else {
-					++find;
-				}
-			}
+			it->second.moveEvent[eventType].clear();
 		}
 	}
 }
 
-void MoveEvents::clearPosMap(MovePosListMap& map, bool fromLua) {
-	for (auto it = map.begin(); it != map.end(); ++it) {
+void MoveEvents::clear() {
+	clearMap(itemIdMap);
+	clearMap(actionIdMap);
+	clearMap(uniqueIdMap);
+	// Clear position map
+	for (auto it = positionMap.begin(); it != positionMap.end(); ++it) {
 		for (int eventType = MOVE_EVENT_STEP_IN; eventType < MOVE_EVENT_LAST; ++eventType) {
-			auto& moveEvents = it->second.moveEvent[eventType];
-			for (auto find = moveEvents.begin(); find != moveEvents.end(); ) {
-				if (fromLua == find->fromLua) {
-					find = moveEvents.erase(find);
-				} else {
-					++find;
-				}
-			}
+			it->second.moveEvent[eventType].clear();
 		}
 	}
-}
-
-void MoveEvents::clear(bool fromLua) {
-	clearMap(itemIdMap, fromLua);
-	clearMap(actionIdMap, fromLua);
-	clearMap(uniqueIdMap, fromLua);
-	clearPosMap(positionMap, fromLua);
-
-	reInitState(fromLua);
-}
-
-LuaScriptInterface& MoveEvents::getScriptInterface() {
-	return scriptInterface;
-}
-
-std::string MoveEvents::getScriptBaseName() const {
-	return "movements";
-}
-
-Event_ptr MoveEvents::getEvent(const std::string& nodeName) {
-	if (strcasecmp(nodeName.c_str(), "movevent") != 0) {
-		return nullptr;
-	}
-	return Event_ptr(new MoveEvent(&scriptInterface));
 }
 
 bool MoveEvents::isRegistered(uint32_t itemid) {
 	auto it = itemIdMap.find(itemid);
 	return it != itemIdMap.end();
-}
-
-bool MoveEvents::registerEvent(Event_ptr event, const pugi::xml_node& node) {
-	MoveEvent_ptr moveEvent{static_cast<MoveEvent*>(event.release())}; //event is guaranteed to be a MoveEvent
-
-	const MoveEvent_t eventType = moveEvent->getEventType();
-	if (eventType == MOVE_EVENT_ADD_ITEM || eventType == MOVE_EVENT_REMOVE_ITEM) {
-		pugi::xml_attribute tileItemAttribute = node.attribute("tileitem");
-		if (tileItemAttribute && pugi::cast<uint16_t>(tileItemAttribute.value()) == 1) {
-			switch (eventType) {
-				case MOVE_EVENT_ADD_ITEM:
-					moveEvent->setEventType(MOVE_EVENT_ADD_ITEM_ITEMTILE);
-					break;
-				case MOVE_EVENT_REMOVE_ITEM:
-					moveEvent->setEventType(MOVE_EVENT_REMOVE_ITEM_ITEMTILE);
-					break;
-				default:
-					break;
-			}
-		}
-	}
-
-	pugi::xml_attribute attr;
-	if ((attr = node.attribute("itemid"))) {
-		int32_t id = pugi::cast<int32_t>(attr.value());
-		if (moveEvent->getEventType() == MOVE_EVENT_EQUIP) {
-			ItemType& it = Item::items.getItemType(id);
-			it.wieldInfo = moveEvent->getWieldInfo();
-			it.minReqLevel = moveEvent->getReqLevel();
-			it.minReqMagicLevel = moveEvent->getReqMagLv();
-			it.vocationString = moveEvent->getVocationString();
-		}
-		addEvent(std::move(*moveEvent), id, itemIdMap);
-	} else if ((attr = node.attribute("fromid"))) {
-		uint32_t id = pugi::cast<uint32_t>(attr.value());
-		uint32_t endId = pugi::cast<uint32_t>(node.attribute("toid").value());
-
-		addEvent(*moveEvent, id, itemIdMap);
-
-		if (moveEvent->getEventType() == MOVE_EVENT_EQUIP) {
-			ItemType& it = Item::items.getItemType(id);
-			it.wieldInfo = moveEvent->getWieldInfo();
-			it.minReqLevel = moveEvent->getReqLevel();
-			it.minReqMagicLevel = moveEvent->getReqMagLv();
-			it.vocationString = moveEvent->getVocationString();
-
-			while (++id <= endId) {
-				addEvent(*moveEvent, id, itemIdMap);
-
-				ItemType& tit = Item::items.getItemType(id);
-				tit.wieldInfo = moveEvent->getWieldInfo();
-				tit.minReqLevel = moveEvent->getReqLevel();
-				tit.minReqMagicLevel = moveEvent->getReqMagLv();
-				tit.vocationString = moveEvent->getVocationString();
-			}
-		} else {
-			while (++id <= endId) {
-				addEvent(*moveEvent, id, itemIdMap);
-			}
-		}
-	} else if ((attr = node.attribute("uniqueid"))) {
-		addEvent(std::move(*moveEvent), pugi::cast<int32_t>(attr.value()), uniqueIdMap);
-	} else if ((attr = node.attribute("fromuid"))) {
-		uint32_t id = pugi::cast<uint32_t>(attr.value());
-		uint32_t endId = pugi::cast<uint32_t>(node.attribute("touid").value());
-		addEvent(*moveEvent, id, uniqueIdMap);
-		while (++id <= endId) {
-			addEvent(*moveEvent, id, uniqueIdMap);
-		}
-	} else if ((attr = node.attribute("actionid"))) {
-		addEvent(std::move(*moveEvent), pugi::cast<int32_t>(attr.value()), actionIdMap);
-	} else if ((attr = node.attribute("fromaid"))) {
-		uint32_t id = pugi::cast<uint32_t>(attr.value());
-		uint32_t endId = pugi::cast<uint32_t>(node.attribute("toaid").value());
-		addEvent(*moveEvent, id, actionIdMap);
-		while (++id <= endId) {
-			addEvent(*moveEvent, id, actionIdMap);
-		}
-	} else if ((attr = node.attribute("pos"))) {
-		std::vector<int32_t> posList = vectorAtoi(explodeString(attr.as_string(), ";"));
-		if (posList.size() < 3) {
-			return false;
-		}
-
-		Position pos(posList[0], posList[1], posList[2]);
-		addEvent(std::move(*moveEvent), pos, positionMap);
-	} else {
-		return false;
-	}
-	return true;
 }
 
 bool MoveEvents::registerLuaFunction(MoveEvent* event) {
@@ -292,7 +156,7 @@ void MoveEvents::addEvent(MoveEvent moveEvent, int32_t id, MoveListMap& map) {
 		for (MoveEvent& existingMoveEvent : moveEventList) {
 			if (existingMoveEvent.getSlot() == moveEvent.getSlot()) {
 				SPDLOG_WARN("[MoveEvents::addEvent] - "
-							"Duplicate move event found: {}", id);
+							"Duplicate move event found: {}, for script with name {}", id, moveEvent.getFileName());
 			}
 		}
 		moveEventList.push_back(std::move(moveEvent));
@@ -382,7 +246,7 @@ void MoveEvents::addEvent(MoveEvent moveEvent, const Position& pos, MovePosListM
 		std::list<MoveEvent>& moveEventList = it->second.moveEvent[moveEvent.getEventType()];
 		if (!moveEventList.empty()) {
 			SPDLOG_WARN("[MoveEvents::addEvent] - "
-						"Duplicate move event found: {}", pos.toString());
+						"Duplicate move event found: {}, for script with name {}", pos.toString(), moveEvent.getFileName());
 		}
 
 		moveEventList.push_back(std::move(moveEvent));
@@ -458,12 +322,16 @@ uint32_t MoveEvents::onItemMove(Item* item, Tile* tile, bool isAdd) {
 	uint32_t ret = 1;
 	MoveEvent* moveEvent = getEvent(tile, eventType1);
 	if (moveEvent) {
-		ret &= moveEvent->fireAddRemItem(item, nullptr, tile->getPosition());
+		if (item && tile) {
+			ret &= moveEvent->fireAddRemItem(item, nullptr, tile->getPosition());
+		}
 	}
 
 	moveEvent = getEvent(item, eventType1);
 	if (moveEvent) {
-		ret &= moveEvent->fireAddRemItem(item, nullptr, tile->getPosition());
+		if (item && tile) {
+			ret &= moveEvent->fireAddRemItem(item, nullptr, tile->getPosition());
+		}
 	}
 
 	for (size_t i = tile->getFirstIndex(), j = tile->getLastIndex(); i < j; ++i) {
@@ -479,15 +347,17 @@ uint32_t MoveEvents::onItemMove(Item* item, Tile* tile, bool isAdd) {
 
 		moveEvent = getEvent(tileItem, eventType2);
 		if (moveEvent) {
-			ret &= moveEvent->fireAddRemItem(item, tileItem, tile->getPosition());
+			if (item && tileItem && tile) {
+				ret &= moveEvent->fireAddRemItem(item, tileItem, tile->getPosition());
+			}
 		}
 	}
 	return ret;
 }
 
-MoveEvent::MoveEvent(LuaScriptInterface* interface) : Event(interface) {}
+MoveEvent::MoveEvent(LuaScriptInterface* interface) : Script(interface) {}
 
-std::string MoveEvent::getScriptEventName() const {
+std::string MoveEvent::getScriptTypeName() const {
 	switch (eventType) {
 		case MOVE_EVENT_STEP_IN: return "onStepIn";
 		case MOVE_EVENT_STEP_OUT: return "onStepOut";
@@ -496,131 +366,9 @@ std::string MoveEvent::getScriptEventName() const {
 		case MOVE_EVENT_ADD_ITEM: return "onAddItem";
 		case MOVE_EVENT_REMOVE_ITEM: return "onRemoveItem";
 		default:
-			SPDLOG_ERROR("[MoveEvent::getScriptEventName] - Invalid event type");
+			SPDLOG_ERROR("[MoveEvent::getScriptTypeName] - Invalid event type for script with name {}", getFileName());
 			return std::string();
 	}
-}
-
-bool MoveEvent::configureEvent(const pugi::xml_node& node) {
-	pugi::xml_attribute eventAttr = node.attribute("event");
-	if (!eventAttr) {
-		SPDLOG_ERROR("[MoveEvent::configureMoveEvent] - Missing event");
-		return false;
-	}
-
-	std::string tmpStr = asLowerCaseString(eventAttr.as_string());
-	if (tmpStr == "stepin") {
-		eventType = MOVE_EVENT_STEP_IN;
-	} else if (tmpStr == "stepout") {
-		eventType = MOVE_EVENT_STEP_OUT;
-	} else if (tmpStr == "equip") {
-		eventType = MOVE_EVENT_EQUIP;
-	} else if (tmpStr == "deequip") {
-		eventType = MOVE_EVENT_DEEQUIP;
-	} else if (tmpStr == "additem") {
-		eventType = MOVE_EVENT_ADD_ITEM;
-	} else if (tmpStr == "removeitem") {
-		eventType = MOVE_EVENT_REMOVE_ITEM;
-	} else {
-		SPDLOG_ERROR("[MoveEvent::configureMoveEvent] - "
-                    "No valid event name {}", eventAttr.as_string());
-		return false;
-	}
-
-	if (eventType == MOVE_EVENT_EQUIP || eventType == MOVE_EVENT_DEEQUIP) {
-		pugi::xml_attribute slotAttribute = node.attribute("slot");
-		if (slotAttribute) {
-			tmpStr = asLowerCaseString(slotAttribute.as_string());
-			if (tmpStr == "head") {
-				slot = SLOTP_HEAD;
-			} else if (tmpStr == "necklace") {
-				slot = SLOTP_NECKLACE;
-			} else if (tmpStr == "backpack") {
-				slot = SLOTP_BACKPACK;
-			} else if (tmpStr == "armor") {
-				slot = SLOTP_ARMOR;
-			} else if (tmpStr == "right-hand") {
-				slot = SLOTP_RIGHT;
-			} else if (tmpStr == "left-hand") {
-				slot = SLOTP_LEFT;
-			} else if (tmpStr == "hand" || tmpStr == "shield") {
-				slot = SLOTP_RIGHT | SLOTP_LEFT;
-			} else if (tmpStr == "legs") {
-				slot = SLOTP_LEGS;
-			} else if (tmpStr == "feet") {
-				slot = SLOTP_FEET;
-			} else if (tmpStr == "ring") {
-				slot = SLOTP_RING;
-			} else if (tmpStr == "ammo") {
-				slot = SLOTP_AMMO;
-			} else {
-				SPDLOG_WARN("[MoveEvent::configureMoveEvent] - "
-							"Unknown slot type: {}", slotAttribute.as_string());
-			}
-		}
-
-		wieldInfo = 0;
-
-		pugi::xml_attribute levelAttribute = node.attribute("level");
-		if (levelAttribute) {
-			reqLevel = pugi::cast<uint32_t>(levelAttribute.value());
-			if (reqLevel > 0) {
-				wieldInfo |= WIELDINFO_LEVEL;
-			}
-		}
-
-		pugi::xml_attribute magLevelAttribute = node.attribute("maglevel");
-		if (magLevelAttribute) {
-			reqMagLevel = pugi::cast<uint32_t>(magLevelAttribute.value());
-			if (reqMagLevel > 0) {
-				wieldInfo |= WIELDINFO_MAGLV;
-			}
-		}
-
-		pugi::xml_attribute premiumAttribute = node.attribute("premium");
-		if (premiumAttribute) {
-			premium = premiumAttribute.as_bool();
-			if (premium) {
-				wieldInfo |= WIELDINFO_PREMIUM;
-			}
-		}
-
-		//Gather vocation information
-		std::list<std::string> vocStringList;
-		for (auto vocationNode : node.children()) {
-			pugi::xml_attribute vocationNameAttribute = vocationNode.attribute("name");
-			if (!vocationNameAttribute) {
-				continue;
-			}
-
-			int32_t vocationId = g_vocations().getVocationId(vocationNameAttribute.as_string());
-			if (vocationId != -1) {
-				vocEquipMap[vocationId] = true;
-				if (vocationNode.attribute("showInDescription").as_bool(true)) {
-					vocStringList.push_back(asLowerCaseString(vocationNameAttribute.as_string()));
-				}
-			}
-		}
-
-		if (!vocEquipMap.empty()) {
-			wieldInfo |= WIELDINFO_VOCREQ;
-		}
-
-		for (const std::string& str : vocStringList) {
-			if (!vocationString.empty()) {
-				if (str != vocStringList.back()) {
-					vocationString.push_back(',');
-					vocationString.push_back(' ');
-				} else {
-					vocationString += " and ";
-				}
-			}
-
-			vocationString += str;
-			vocationString.push_back('s');
-		}
-	}
-	return true;
 }
 
 uint32_t MoveEvent::StepInField(Creature* creature, Item* item, const Position&) {
@@ -638,9 +386,16 @@ uint32_t MoveEvent::StepOutField(Creature*, Item*, const Position&) {
 }
 
 uint32_t MoveEvent::AddItemField(Item* item, Item*, const Position&) {
-	if (MagicField* field = item->getMagicField()) {
-		Tile* tile = item->getTile();
-		if (CreatureVector* creatures = tile->getCreatures()) {
+	if (!item) {
+		SPDLOG_ERROR("[MoveEvent::AddItemField] - Wrong or not found item id");
+		return LUA_ERROR_ITEM_NOT_FOUND;
+	}
+
+	if (MagicField* field = item->getMagicField())
+	{
+		if (Tile* tile = item->getTile();
+		CreatureVector* creatures = tile->getCreatures())
+		{
 			for (Creature* creature : *creatures) {
 				field->onStepInField(creature);
 			}
@@ -847,35 +602,6 @@ uint32_t MoveEvent::DeEquipItem(MoveEvent*, Player* player, Item* item, Slots_t 
 	return 1;
 }
 
-// TODO (EDUARDO): Move this functions for revscriptsys interface
-bool MoveEvent::loadFunction(const pugi::xml_attribute& attr, bool isScripted) {
-	const char* functionName = attr.as_string();
-	if (strcasecmp(functionName, "onstepinfield") == 0) {
-		stepFunction = StepInField;
-	} else if (strcasecmp(functionName, "onstepoutfield") == 0) {
-		stepFunction = StepOutField;
-	} else if (strcasecmp(functionName, "onaddfield") == 0) {
-		moveFunction = AddItemField;
-	} else if (strcasecmp(functionName, "onremovefield") == 0) {
-		moveFunction = RemoveItemField;
-	} else if (strcasecmp(functionName, "onequipitem") == 0) {
-		equipFunction = EquipItem;
-	} else if (strcasecmp(functionName, "ondeequipitem") == 0) {
-		equipFunction = DeEquipItem;
-	} else {
-		if (!isScripted) {
-			SPDLOG_WARN("[MoveEvent::loadFunction] - "
-						"Function {} does not exist", functionName);
-			return false;
-		}
-	}
-
-	if (!isScripted) {
-		scripted = false;
-	}
-	return true;
-}
-
 MoveEvent_t MoveEvent::getEventType() const {
 	return eventType;
 }
@@ -885,7 +611,7 @@ void MoveEvent::setEventType(MoveEvent_t type) {
 }
 
 uint32_t MoveEvent::fireStepEvent(Creature* creature, Item* item, const Position& pos) {
-	if (scripted) {
+	if (isLoadedCallback()) {
 		return executeStep(creature, item, pos);
 	} else {
 		return stepFunction(creature, item, pos);
@@ -918,7 +644,7 @@ bool MoveEvent::executeStep(Creature* creature, Item* item, const Position& pos)
 }
 
 uint32_t MoveEvent::fireEquip(Player* player, Item* item, Slots_t toSlot, bool isCheck) {
-	if (scripted) {
+	if (isLoadedCallback()) {
 		if (!equipFunction || equipFunction(this, player, item, toSlot, isCheck) == 1) {
 			if (executeEquip(player, item, toSlot, isCheck)) {
 				return 1;
@@ -956,10 +682,12 @@ bool MoveEvent::executeEquip(Player* player, Item* item, Slots_t onSlot, bool is
 }
 
 uint32_t MoveEvent::fireAddRemItem(Item* item, Item* fromTile, const Position& pos) {
-	if (scripted) {
+	if (isLoadedCallback()) {
 		return executeAddRemItem(item, fromTile, pos);
 	} else {
-		return moveFunction(item, fromTile, pos);
+		if (item && fromTile) {
+			return moveFunction(item, fromTile, pos);
+		}
 	}
 }
 

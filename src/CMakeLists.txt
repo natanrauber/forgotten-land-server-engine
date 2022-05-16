@@ -1,11 +1,9 @@
 project(canary)
 
 # *****************************************************************************
-# Cmake Features
+# CMake Features
 # *****************************************************************************
-set(CMAKE_CXX_STANDARD 17)
-# Minimum version 8 for use c++ 17
-set(GNUCXX_MINIMUM_VERSION 8)
+set(GNUCXX_MINIMUM_VERSION 9)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
@@ -24,6 +22,18 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 
 # *****************************************************************************
+# Sanity Check
+# *****************************************************************************
+
+# === GCC Minimum Version ===
+if (CMAKE_COMPILER_IS_GNUCXX)
+  if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS GNUCXX_MINIMUM_VERSION)
+    message(FATAL_ERROR "GCC version must be at least ${GNUCXX_MINIMUM_VERSION}!")
+  endif()
+endif()
+
+
+# *****************************************************************************
 # Options
 # *****************************************************************************
 option(OPTIONS_ENABLE_OPENMP "Enable Open Multi-Processing support." ON)
@@ -32,12 +42,32 @@ option(ASAN_ENABLED "Build this target with AddressSanitizer" OFF)
 
 
 # *****************************************************************************
-# Client
+# Project
 # *****************************************************************************
 if (MSVC)
   add_executable(${PROJECT_NAME} "" ../cmake/canary.rc)
 else()
   add_executable(${PROJECT_NAME} "")
+endif()
+
+
+# *****************************************************************************
+# Build flags
+# *****************************************************************************
+if (MSVC)
+  # Need c++23 for use somes new features instead of boost library and set "/std:c++latest" flag
+  target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_23)
+  target_compile_options(${PROJECT_NAME} PRIVATE /Zc:__cplusplus /std:c++latest)
+
+else()
+  target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_20)
+  if(CMAKE_BUILD_TYPE MATCHES Debug)
+    target_compile_options(${PROJECT_NAME}  PRIVATE )
+  else()
+    if (CMAKE_COMPILER_IS_GNUCXX)
+      target_compile_options(${PROJECT_NAME}  PRIVATE  -Wno-deprecated-declarations)
+    endif()
+  endif()
 endif()
 
 
@@ -79,7 +109,6 @@ endif()
 # === ASAN ===
 if(ASAN_ENABLED)
   log_option_enabled("asan")
-
   if(MSVC)
     target_compile_options(${PROJECT_NAME} PUBLIC /fsanitize=address)
   else()
@@ -100,19 +129,10 @@ if(CMAKE_BUILD_TYPE MATCHES Debug)
   log_option_disabled("DEBUG LOG")
 endif(CMAKE_BUILD_TYPE MATCHES Debug)
 
-
-# Set for suppress deprecated declarations (for GCC/GNU)
-# If not is GNUCXX_MINIMUM_VERSION, return message of error
-if (CMAKE_COMPILER_IS_GNUCXX)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated-declarations")
-  if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS GNUCXX_MINIMUM_VERSION)
-    message(FATAL_ERROR "GCC version must be at least ${GNUCXX_MINIMUM_VERSION}!")
-  endif()
-endif()
-
 # *****************************************************************************
 # Packages / Libs
 # *****************************************************************************
+find_package(Asio REQUIRED)
 find_package(spdlog REQUIRED)
 find_package(LuaJIT REQUIRED)
 find_package(Threads REQUIRED)
@@ -121,7 +141,6 @@ find_package(cryptopp CONFIG REQUIRED)
 find_package(Protobuf REQUIRED)
 
 if (MSVC)
-  find_package(Boost 1.53.0 COMPONENTS system filesystem iostreams date_time REQUIRED)
   set(CRYPTOPP_LIBRARIES "cryptopp-static")
   find_package(CURL REQUIRED)
   find_package(jsoncpp REQUIRED)
@@ -129,7 +148,6 @@ if (MSVC)
   find_package(PugiXML REQUIRED)
   find_package(Threads REQUIRED)
 else()
-  find_package(Boost REQUIRED COMPONENTS system filesystem iostreams date_time)
   find_package(CURL CONFIG REQUIRED)
   find_package(jsoncpp CONFIG REQUIRED)
   find_package(pugixml CONFIG REQUIRED)
@@ -140,11 +158,12 @@ include(GNUInstallDirs)
 
 
 # *****************************************************************************
-# otserver configuration
+# Projetct configuration
 # *****************************************************************************
 target_sources(${PROJECT_NAME}
   PRIVATE
     config/configmanager.cpp
+    core/file_handle.cpp
     creatures/appearance/mounts/mounts.cpp
     creatures/appearance/outfit/outfit.cpp
     creatures/combat/combat.cpp
@@ -177,7 +196,6 @@ target_sources(${PROJECT_NAME}
     game/movement/teleport.cpp
     game/scheduling/scheduler.cpp
     game/scheduling/tasks.cpp
-    io/fileloader.cpp
     io/iobestiary.cpp
     io/ioguild.cpp
     io/iologindata.cpp
@@ -285,7 +303,6 @@ target_sources(${PROJECT_NAME}
 )
 
 if (MSVC)
-
   if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     string(REPLACE "/Zi" "/Z7" CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG}")
     string(REPLACE "/Zi" "/Z7" CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG}")
@@ -300,52 +317,44 @@ if (MSVC)
   target_compile_options(${PROJECT_NAME} PUBLIC /MP /FS /Zf )
 
   target_include_directories(${PROJECT_NAME}
-    PRIVATE
-      ${Boost_LIBRARY_DIRS}
-      ${CMAKE_SOURCE_DIR}/src
-      ${MYSQL_INCLUDE_DIR}
-      ${LUA_INCLUDE_DIR}
-      ${Boost_INCLUDE_DIRS}
-      ${PUGIXML_INCLUDE_DIR}
-      ${CRYPTOPP_INCLUDE_DIR}
-      ${CURL_INCLUDE_DIRS}
-      ${Protobuf_INCLUDE_DIRS}
-      ${SPDLOG_INCLUDE_DIR}
-      $<TARGET_PROPERTY:jsoncpp_lib,INTERFACE_INCLUDE_DIRECTORIES>
-  )
+  PRIVATE
+    ${CMAKE_SOURCE_DIR}/src
+    ${MYSQL_INCLUDE_DIR}
+    ${LUA_INCLUDE_DIR}
+    ${PUGIXML_INCLUDE_DIR}
+    ${CRYPTOPP_INCLUDE_DIR}
+    ${CURL_INCLUDE_DIRS}
+    ${SPDLOG_INCLUDE_DIR}
+    ${Protobuf_INCLUDE_DIRS}
+    asio::asio
+    $<TARGET_PROPERTY:jsoncpp_lib,INTERFACE_INCLUDE_DIRECTORIES>)
 
   target_link_libraries(${PROJECT_NAME}
-    PRIVATE
-      ${MYSQL_CLIENT_LIBS}
-      ${LUA_LIBRARIES}
-      ${Boost_LIBRARIES}
-      ${PUGIXML_LIBRARIES}
-      ${CRYPTOPP_LIBRARIES}
-      ${CMAKE_THREAD_LIBS_INIT}
-      ${CURL_LIBRARIES}
-      ${Protobuf_LIBRARIES}
-      ${SPDLOG_LIBRARY}
-      fmt::fmt
-      jsoncpp_lib
-      libzippp::libzippp
+  PRIVATE
+    ${MYSQL_CLIENT_LIBS}
+    ${LUA_LIBRARIES}
+    ${PUGIXML_LIBRARIES}
+    ${CRYPTOPP_LIBRARIES}
+    ${CMAKE_THREAD_LIBS_INIT}
+    ${CURL_LIBRARIES}
+    ${SPDLOG_LIBRARY}
+    protobuf::libprotobuf
+    fmt::fmt
+    jsoncpp_lib
+    libzippp::libzippp
+    asio::asio
   )
 
-else()
-
-  target_include_directories(${PROJECT_NAME}
+  else()
+    target_include_directories(${PROJECT_NAME}
     PRIVATE
       ${CMAKE_SOURCE_DIR}/src
       ${LUA_INCLUDE_DIR}
       ${Protobuf_INCLUDE_DIRS}
   )
 
-  target_link_libraries(${PROJECT_NAME}
+    target_link_libraries(${PROJECT_NAME}
     PRIVATE
-      Boost::boost
-      Boost::date_time
-      Boost::filesystem
-      Boost::iostreams
-      Boost::system
       cryptopp-static
       CURL::libcurl
       jsoncpp_static
@@ -354,11 +363,10 @@ else()
       spdlog::spdlog
       Threads::Threads
       ${LUA_LIBRARIES}
-      ${Protobuf_LIBRARIES}
+      protobuf::libprotobuf
       libzippp::libzippp
-  )
-
-endif (MSVC)
+    )
+endif(MSVC)
 
 set_target_properties(${PROJECT_NAME}
     PROPERTIES
