@@ -4257,7 +4257,7 @@
 		<attribute key="weight" value="500"/>
 	</item>
 	<item id="2921" article="a" name="lit torch">
-		<attribute key="duration" value="600"/>
+		<attribute key="duration" value="1800"/>
 		<attribute key="decayTo" value="2923"/>
 		<attribute key="weight" value="500"/>
 	</item>
@@ -4266,7 +4266,7 @@
 		<attribute key="weight" value="500"/>
 	</item>
 	<item id="2923" article="a" name="lit torch">
-		<attribute key="duration" value="300"/>
+		<attribute key="duration" value="900"/>
 		<attribute key="decayTo" value="2925"/>
 		<attribute key="weight" value="450"/>
 	</item>
@@ -4275,7 +4275,7 @@
 		<attribute key="weight" value="500"/>
 	</item>
 	<item id="2925" article="a" name="lit torch">
-		<attribute key="duration" value="300"/>
+		<attribute key="duration" value="900"/>
 		<attribute key="decayTo" value="2926"/>
 		<attribute key="weight" value="400"/>
 	</item>
