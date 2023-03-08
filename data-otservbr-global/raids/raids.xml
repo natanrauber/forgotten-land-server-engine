@@ -83,8 +83,7 @@
 	<raid name="Megascolia" file="rookgaard/megascolia.xml" interval2="500" margin="30" />
 	<raid name="Munster" file="rookgaard/munster.xml" interval2="500" margin="40" />
 	<raid name="Rats" file="rookgaard/rats.xml" interval2="500" margin="70" />
-	<raid name="Rottie The Rotworm katana" file="rookgaard/rottie1.xml" interval2="500" margin="70" />
-	<raid name="Rottie The Rotworm spidercave" file="rookgaard/rottie2.xml" interval2="300" margin="70" />
+	<raid name="Rottie" file="rookgaard/rottie.xml" interval2="500" margin="70" />
 	<raid name="Teleskor" file="rookgaard/teleskor.xml" interval2="500" margin="50" />
 	<raid name="Wounded Dragon" file="rookgaard/wounded_dragon.xml" interval2="500" margin="80" />
 	<!-- Roshamuul -->
