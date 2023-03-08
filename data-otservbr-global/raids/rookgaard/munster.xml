@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <raid>
-	<areaspawn delay="10000" fromx="32101" fromy="32217" fromz="9" tox="32101" toy="32217" toz="9">
+	<areaspawn delay="10000" fromx="32053" fromy="32188" fromz="9" tox="32057" toy="32192" toz="9">
 		<monster name="Munster" amount="1" />
+		<monster name="Cave Rat" amount="2" />
 	</areaspawn>
 </raid>
