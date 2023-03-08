@@ -1,8 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <raid>
-	<announce delay="1000" type="event" message="Inumerous Rats invaded Rookgaard!" />
-	<areaspawn delay="1000" fromx="32066" fromy="32187" fromz="7" tox="32110" toy="32219" toz="7">
-		<monster name="Rat" amount="20" />
-		<monster name="Cave Rat" amount="10" />
+	<!-- Al Dee's House -->
+	<areaspawn delay="10000" fromx="32004" fromy="32152" fromz="6" tox="32008" toy="32162" toz="6">
+		<monster name="Rat" amount="8" />
+	</areaspawn>
+
+	<!-- Al Dee's Shop -->
+	<areaspawn delay="10000" fromx="32004" fromy="32152" fromz="7" tox="32008" toy="32155" toz="7">
+		<monster name="Rat" amount="3" />
+	</areaspawn>
+
+	<!-- Cellar -->
+	<areaspawn delay="10000" fromx="32024" fromy="32161" fromz="7" tox="32030" toy="32167" toz="7">
+		<monster name="Rat" amount="5" />
+	</areaspawn>
+
+	<!-- Willie's Basement -->
+	<areaspawn delay="10000" fromx="32005" fromy="32182" fromz="5" tox="32014" toy="32184" toz="5">
+		<monster name="Rat" amount="3" />
+	</areaspawn>
+
+	<!-- Willie's Mill -->
+	<areaspawn delay="10000" fromx="32005" fromy="32180" fromz="7" tox="32013" toy="32185" toz="7">
+		<monster name="Rat" amount="2" />
+	</areaspawn>
+
+	<!-- Farm -->
+	<areaspawn delay="10000" fromx="32019" fromy="32190" fromz="7" tox="32032" toy="32198" toz="7">
+		<monster name="Rat" amount="5" />
+	</areaspawn>
+
+	<!-- Watch Tower -->
+	<areaspawn delay="10000" fromx="32000" fromy="32220" fromz="6" tox="32023" toy="32221" toz="6">
+		<monster name="Rat" amount="3" />
 	</areaspawn>
 </raid>
