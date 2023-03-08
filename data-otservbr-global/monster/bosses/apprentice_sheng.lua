@@ -29,7 +29,7 @@ monster.strategiesTarget = {
 	nearest = 70,
 	health = 10,
 	damage = 10,
-	random = 10,
+	random = 10
 }
 
 monster.flags = {
@@ -38,7 +38,7 @@ monster.flags = {
 	hostile = true,
 	convinceable = false,
 	pushable = false,
-	rewardBoss = true,
+	rewardBoss = false,
 	illusionable = false,
 	canPushItems = true,
 	canPushCreatures = true,
@@ -74,27 +74,66 @@ monster.voices = {
 }
 
 monster.loot = {
-	{name = "minotaur leather", chance = 100000},
-	{id = 3046, chance = 76000}, -- magic light wand
-	{name = "gold coin", chance = 38000, maxCount = 10},
 	{id = 2920, chance = 30000, maxCount = 2}, -- torch
-	{name = "leather legs", chance = 23000},
+	{id = 3046, chance = 76000}, -- magic light wand
 	{id = 3595, chance = 7690}, -- carrot
+	{name = "gold coin", chance = 38000, maxCount = 10},
+	{name = "knife", chance = 7690},
 	{name = "leather helmet", chance = 7690},
-	{name = "knife", chance = 7690}
+	{name = "leather legs", chance = 23000},
+	-- {name = "minotaur leather", chance = 100000}
 }
 
 monster.attacks = {
-	{name ="melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -10},
-	{name ="energyfield", interval = 1000, chance = 8, range = 7, radius = 1, shootEffect = CONST_ANI_ENERGY, target = true},
-	{name ="combat", interval = 1000, chance = 14, type = COMBAT_ENERGYDAMAGE, minDamage = 0, maxDamage = -25, range = 7, shootEffect = CONST_ANI_ENERGYBALL, effect = CONST_ME_ENERGYAREA, target = false},
-	{name ="combat", interval = 2000, chance = 10, type = COMBAT_FIREDAMAGE, minDamage = 0, maxDamage = -45, range = 7, shootEffect = CONST_ANI_FIRE, effect = CONST_ME_FIREAREA, target = false}
+	{name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -10},
+	{
+		name = "energyfield",
+		interval = 1000,
+		chance = 8,
+		range = 7,
+		radius = 1,
+		shootEffect = CONST_ANI_ENERGY,
+		target = true
+	},
+	{
+		name = "combat",
+		interval = 1000,
+		chance = 14,
+		type = COMBAT_ENERGYDAMAGE,
+		minDamage = 0,
+		maxDamage = -25,
+		range = 7,
+		shootEffect = CONST_ANI_ENERGYBALL,
+		effect = CONST_ME_ENERGYAREA,
+		target = false
+	},
+	{
+		name = "combat",
+		interval = 2000,
+		chance = 10,
+		type = COMBAT_FIREDAMAGE,
+		minDamage = 0,
+		maxDamage = -45,
+		range = 7,
+		shootEffect = CONST_ANI_FIRE,
+		effect = CONST_ME_FIREAREA,
+		target = false
+	}
 }
 
 monster.defenses = {
 	defense = 13,
 	armor = 12,
-	{name ="combat", interval = 4000, chance = 15, type = COMBAT_HEALING, minDamage = 10, maxDamage = 20, effect = CONST_ME_MAGIC_BLUE, target = false}
+	{
+		name = "combat",
+		interval = 4000,
+		chance = 15,
+		type = COMBAT_HEALING,
+		minDamage = 10,
+		maxDamage = 20,
+		effect = CONST_ME_MAGIC_BLUE,
+		target = false
+	}
 }
 
 monster.elements = {
@@ -106,8 +145,8 @@ monster.elements = {
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
 	{type = COMBAT_ICEDAMAGE, percent = 0},
-	{type = COMBAT_HOLYDAMAGE , percent = 0},
-	{type = COMBAT_DEATHDAMAGE , percent = 0}
+	{type = COMBAT_HOLYDAMAGE, percent = 0},
+	{type = COMBAT_DEATHDAMAGE, percent = 0}
 }
 
 monster.immunities = {
