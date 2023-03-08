@@ -77,12 +77,16 @@
 	<raid name="Terror" file="port_hope/terrorbirds.xml" interval2="500" margin="100" />
 	<raid name="The Welter" file="port_hope/the_welter.xml" interval2="440" margin="60"/>
 	<!-- Rookgaard -->
+	<raid name="Apprentice Sheng" file="rookgaard/sheng.xml" interval2="500" margin="70" />
+	<raid name="Captain Iglue" file="rookgaard/captain_iglue.xml" interval2="500" margin="20" />
+	<raid name="Magic Deer" file="rookgaard/magic_deer.xml" interval2="500" margin="20" />
+	<raid name="Megascolia" file="rookgaard/megascolia.xml" interval2="500" margin="30" />
 	<raid name="Munster" file="rookgaard/munster.xml" interval2="500" margin="40" />
 	<raid name="Rats" file="rookgaard/rats.xml" interval2="500" margin="70" />
 	<raid name="Rottie The Rotworm katana" file="rookgaard/rottie1.xml" interval2="500" margin="70" />
 	<raid name="Rottie The Rotworm spidercave" file="rookgaard/rottie2.xml" interval2="300" margin="70" />
-	<raid name="Apprentice Sheng" file="rookgaard/sheng.xml" interval2="500" margin="70" />
 	<raid name="Teleskor" file="rookgaard/teleskor.xml" interval2="500" margin="50" />
+	<raid name="Wounded Dragon" file="rookgaard/wounded_dragon.xml" interval2="500" margin="80" />
 	<!-- Roshamuul -->
 	<raid name="Gaz" file="roshamuul/gaz_haragoth.xml" interval2="1440" margin="160" />
 	<raid name="Mawhawk" file="roshamuul/mawhawk.xml" interval2="410" margin="20" />
