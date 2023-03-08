@@ -3353,11 +3353,11 @@ void ProtocolGame::sendBasicData() {
 	msg.addByte(player->getVocation()->getClientId());
 
 	// Prey window
-	if (player->getVocation()->getId() == 0) {
-		msg.addByte(0);
-	} else {
-		msg.addByte(1); // has reached Main (allow player to open Prey window)
-	}
+	// if (player->getVocation()->getId() == 0) {
+	// 	msg.addByte(0);
+	// } else {
+	msg.addByte(1); // has reached Main (allow player to open Prey window)
+	// }
 
 	std::list<uint16_t> spellsList = g_spells().getSpellsByVocation(player->getVocationId());
 	msg.add<uint16_t>(spellsList.size());
