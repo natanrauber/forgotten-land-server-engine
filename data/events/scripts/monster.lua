@@ -98,24 +98,26 @@ function Monster:onDropLoot(corpse)
 			end
 
 			local text = {}
-			if self:getName():lower() == (Game.getBoostedCreature()):lower() then
-				text = ("Loot of %s: %s (boosted loot)"):format(mType:getNameDescription(), corpse:getContentDescription())
-			elseif boostedMessage then
-				text = ("Loot of %s: %s (Boss bonus)"):format(mType:getNameDescription(), corpse:getContentDescription())
-			else
-				text = ("Loot of %s: %s"):format(mType:getNameDescription(), corpse:getContentDescription())
-			end
-			if preyLootPercent > 0 then
-				text = text .. " (active prey bonus)"
-			end
-			if charmBonus then
-				text = text .. " (active charm bonus)"
-			end
-			local party = player:getParty()
-			if party then
-				party:broadcastPartyLoot(text)
-			else
-				player:sendTextMessage(MESSAGE_LOOT, text)
+			if corpse:getContentDescription() ~= "nothing" then
+				if self:getName():lower() == (Game.getBoostedCreature()):lower() then
+					text = ("Loot of %s: %s (boosted loot)"):format(mType:getNameDescription(), corpse:getContentDescription())
+				elseif boostedMessage then
+					text = ("Loot of %s: %s (Boss bonus)"):format(mType:getNameDescription(), corpse:getContentDescription())
+				else
+					text = ("Loot of %s: %s"):format(mType:getNameDescription(), corpse:getContentDescription())
+				end
+				if preyLootPercent > 0 then
+					text = text .. " (active prey bonus)"
+				end
+				if charmBonus then
+					text = text .. " (active charm bonus)"
+				end
+				local party = player:getParty()
+				if party then
+					party:broadcastPartyLoot(text)
+				else
+					player:sendTextMessage(MESSAGE_LOOT, text)
+				end
 			end
 			player:updateKillTracker(self, corpse)
 		end
