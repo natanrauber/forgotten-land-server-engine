@@ -6,4 +6,4 @@ function market.onUse(player, item, fromPosition, target, toPosition, isHotkey)
 end
 
 market:id(12903)
-market:register()
+-- market:register()

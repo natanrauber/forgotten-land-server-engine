@@ -1471,7 +1471,8 @@ int PlayerFunctions::luaPlayerSetGroup(lua_State* L) {
 int PlayerFunctions::luaPlayerSetSpecialContainersAvailable(lua_State* L) {
 	// player:setSpecialContainersAvailable(stashMenu, marketMenu, depotSearchMenu)
 	bool supplyStashMenu = getBoolean(L, 2, false);
-	bool marketMenu = getBoolean(L, 3, false);
+	// bool marketMenu = getBoolean(L, 3, false);
+	bool marketMenu = false;
 	bool depotSearchMenu = getBoolean(L, 4, false);
 	Player* player = getUserdata<Player>(L, 1);
 	if (player) {

@@ -1046,7 +1046,7 @@ DepotLocker* Player::getDepotLocker(uint32_t depotId) {
 
 	DepotLocker* depotLocker = new DepotLocker(ITEM_LOCKER);
 	depotLocker->setDepotId(depotId);
-	depotLocker->internalAddThing(Item::CreateItem(ITEM_MARKET));
+	// depotLocker->internalAddThing(Item::CreateItem(ITEM_MARKET));
 	depotLocker->internalAddThing(inbox);
 	depotLocker->internalAddThing(Item::CreateItem(ITEM_SUPPLY_STASH));
 	Container* depotChest = Item::CreateItemAsContainer(ITEM_DEPOT, static_cast<uint16_t>(g_configManager().getNumber(DEPOT_BOXES)));

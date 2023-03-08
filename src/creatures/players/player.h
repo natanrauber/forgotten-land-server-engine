@@ -436,7 +436,8 @@ class Player final : public Creature, public Cylinder {
 			// Menu option 'show in market'
 			// Menu option to open depot search
 			supplyStash = supplyStashBool;
-			marketMenu = marketMenuBool;
+			// marketMenu = marketMenuBool;
+			marketMenu = false;
 			depotSearch = depotSearchBool;
 			if (client) {
 				client->sendSpecialContainersAvailable();
