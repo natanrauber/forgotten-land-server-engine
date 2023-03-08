@@ -67,15 +67,11 @@ monster.voices = {
 }
 
 monster.loot = {
-    {name = "small diamond", chance = 380},
-    {name = "gold coin", chance = 47500, maxCount = 70},
-    {name = "gold coin", chance = 37500, maxCount = 45},
-    {name = "longsword", chance = 4000},
-    {name = "burst arrow", chance = 8060, maxCount = 10},
-    {name = "dragon ham", chance = 65500, maxCount = 3},
-    {name = "green dragon leather", chance = 1005},
-    {name = "green dragon scale", chance = 1000},
-    {name = "dragon's tail", chance = 9740}
+    {id = 3028, chance = 380}, -- small diamond
+    {id = 3031, chance = 47500, maxCount = 70}, -- gold coin
+    {id = 3031, chance = 37500, maxCount = 45}, -- gold coin
+    {id = 3285, chance = 4000}, -- longsword
+    {id = 3583, chance = 65500, maxCount = 3} -- dragon ham
 }
 
 monster.attacks = {
