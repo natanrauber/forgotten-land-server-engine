@@ -2,7 +2,7 @@ local mType = Game.createMonsterType("Cockroach")
 local monster = {}
 
 monster.description = "a cockroach"
-monster.experience = 0
+monster.experience = 5
 monster.outfit = {
 	lookType = 284,
 	lookHead = 0,
@@ -13,8 +13,8 @@ monster.outfit = {
 	lookMount = 0
 }
 
-monster.health = 1
-monster.maxHealth = 1
+monster.health = 5
+monster.maxHealth = 5
 monster.race = "venom"
 monster.corpse = 7763
 monster.speed = 90
@@ -26,7 +26,7 @@ monster.changeTarget = {
 }
 
 monster.strategiesTarget = {
-	nearest = 100,
+	nearest = 100
 }
 
 monster.flags = {
@@ -56,7 +56,7 @@ monster.light = {
 
 monster.voices = {
 	interval = 5000,
-	chance = 10,
+	chance = 10
 }
 
 monster.loot = {
@@ -64,8 +64,8 @@ monster.loot = {
 }
 
 monster.defenses = {
-	defense = 5,
-	armor = 10
+	defense = 1,
+	armor = 1
 }
 
 monster.elements = {
@@ -77,8 +77,8 @@ monster.elements = {
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
 	{type = COMBAT_ICEDAMAGE, percent = 0},
-	{type = COMBAT_HOLYDAMAGE , percent = 0},
-	{type = COMBAT_DEATHDAMAGE , percent = 0}
+	{type = COMBAT_HOLYDAMAGE, percent = 0},
+	{type = COMBAT_DEATHDAMAGE, percent = 0}
 }
 
 monster.immunities = {
