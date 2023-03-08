@@ -37,10 +37,10 @@ function playerLogin.onLogin(player)
 		db.query('UPDATE `players` SET `istutorial` = 0 where `id`='..player:getGuid())
 		-- Open channels
 		if table.contains({TOWNS_LIST.DAWNPORT, TOWNS_LIST.DAWNPORT_TUTORIAL}, player:getTown():getId())then
-			player:openChannel(3) -- World chat
+			-- player:openChannel(3) -- World chat
 		else
-			player:openChannel(3) -- World chat
-			player:openChannel(5) -- Advertsing main
+			-- player:openChannel(3) -- World chat
+			-- player:openChannel(5) -- Advertsing main
 		end
 	else
 		player:sendTextMessage(MESSAGE_STATUS, "Welcome to " .. SERVER_NAME .. "!")
