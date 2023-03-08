@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<raid>
+    <areaspawn delay="10000" fromx="32139" fromy="32217" fromz="9" tox="32141" toy="32220" toz="9">
+        <monster name="Wounded Dragon" amount="1" />
+    </areaspawn>
+</raid>
