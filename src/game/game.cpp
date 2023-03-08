@@ -914,6 +914,11 @@ void Game::playerMoveCreatureByID(uint32_t playerId, uint32_t movingCreatureId, 
 }
 
 void Game::playerMoveCreature(Player* player, Creature* movingCreature, const Position &movingCreatureOrigPos, Tile* toTile) {
+	if (player->hasFlag(PlayerFlags_t::CanPushAllCreatures)) {
+		internalMoveCreature(*movingCreature, *toTile);
+		return;
+	}
+
 	if (!player->canDoAction()) {
 		uint32_t delay = 600;
 		SchedulerTask* task = createSchedulerTask(delay, std::bind(&Game::playerMoveCreatureByID, this, player->getID(), movingCreature->getID(), movingCreatureOrigPos, toTile->getPosition()));
