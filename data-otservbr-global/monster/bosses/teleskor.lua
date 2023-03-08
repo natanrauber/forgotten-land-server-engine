@@ -68,8 +68,8 @@ monster.loot = {
 	{id = 11481, chance = 100000}, -- pelvis bone
 	{id = 3031, chance = 81000, maxCount = 79}, -- gold coin
 	{id = 2920, chance = 36000}, -- torch
-	{id = "bone sword", chance = 4000},
-	{id = "bone shield", chance = 3000}
+	{id = 3338, chance = 4000}, -- bone sword
+	{id = 3441, chance = 3000} -- bone shield
 }
 
 monster.attacks = {
