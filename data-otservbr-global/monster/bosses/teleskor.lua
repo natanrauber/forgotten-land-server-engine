@@ -29,7 +29,7 @@ monster.strategiesTarget = {
 	nearest = 70,
 	health = 10,
 	damage = 10,
-	random = 10,
+	random = 10
 }
 
 monster.flags = {
@@ -67,16 +67,13 @@ monster.voices = {
 monster.loot = {
 	{id = 11481, chance = 100000}, -- pelvis bone
 	{id = 3031, chance = 81000, maxCount = 79}, -- gold coin
-	{id = 3286, chance = 72000}, -- mace
-	{id = 3367, chance = 72000}, -- viking helmet
-	{id = 3411, chance = 45000}, -- brass shield
 	{id = 2920, chance = 36000}, -- torch
-	{id = 3276, chance = 27000}, -- hatchet
-	{id = 3264, chance = 27000} -- sword
+	{id = "bone sword", chance = 4000},
+	{id = "bone shield", chance = 3000}
 }
 
 monster.attacks = {
-	{name ="melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -30}
+	{name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -30}
 }
 
 monster.defenses = {
@@ -93,8 +90,8 @@ monster.elements = {
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
 	{type = COMBAT_ICEDAMAGE, percent = 0},
-	{type = COMBAT_HOLYDAMAGE , percent = -5},
-	{type = COMBAT_DEATHDAMAGE , percent = 0}
+	{type = COMBAT_HOLYDAMAGE, percent = -5},
+	{type = COMBAT_DEATHDAMAGE, percent = 0}
 }
 
 monster.immunities = {
