@@ -23,9 +23,8 @@ monster.Bestiary = {
 	CharmsPoints = 5,
 	Stars = 1,
 	Occurrence = 0,
-	Locations = "Rookgaard and Mainland, in most sewers and caves near towns. \z
-		They can be found almost everywhere in Tibia."
-	}
+	Locations = "They can be found almost everywhere in Tibia. In most sewers and caves near towns."
+}
 
 monster.health = 20
 monster.maxHealth = 20
@@ -40,7 +39,7 @@ monster.changeTarget = {
 }
 
 monster.strategiesTarget = {
-	nearest = 100,
+	nearest = 100
 }
 
 monster.flags = {
@@ -75,12 +74,11 @@ monster.voices = {
 }
 
 monster.loot = {
-	{name = "gold coin", chance = 100000, maxCount = 4},
-	{id = 3607, chance = 39410} -- cheese
+	{id = 3607, chance = 10000} -- cheese
 }
 
 monster.attacks = {
-	{name ="melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -10}
+	{name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -10}
 }
 
 monster.defenses = {
@@ -97,8 +95,8 @@ monster.elements = {
 	{type = COMBAT_MANADRAIN, percent = 0},
 	{type = COMBAT_DROWNDAMAGE, percent = 0},
 	{type = COMBAT_ICEDAMAGE, percent = -10},
-	{type = COMBAT_HOLYDAMAGE , percent = 20},
-	{type = COMBAT_DEATHDAMAGE , percent = -10}
+	{type = COMBAT_HOLYDAMAGE, percent = 20},
+	{type = COMBAT_DEATHDAMAGE, percent = -10}
 }
 
 monster.immunities = {
