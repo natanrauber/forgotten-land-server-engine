@@ -9670,36 +9670,24 @@ local items = {
 		itemid = 12670,
 		type = "equip",
 		slot = "ring",
-		vocation = {
-			{"None", true}
-		}
 	},
 	{
 		-- star ring
 		itemid = 12670,
 		type = "deequip",
 		slot = "ring",
-		vocation = {
-			{"None", true}
-		}
 	},
 	{
 		-- star ring
 		itemid = 12669,
 		type = "equip",
 		slot = "ring",
-		vocation = {
-			{"None", true}
-		}
 	},
 	{
 		-- star ring
 		itemid = 12669,
 		type = "deequip",
 		slot = "ring",
-		vocation = {
-			{"None", true}
-		}
 	},
 	{
 		-- wand of dimensions
