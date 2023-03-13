@@ -55,7 +55,7 @@ monster.flags = {
 	canPushCreatures = false,
 	staticAttackChance = 90,
 	targetDistance = 1,
-	runHealth = 17,
+	runHealth = 15,
 	healthHidden = false,
 	isBlockable = false,
 	canWalkOnEnergy = false,
@@ -81,7 +81,7 @@ monster.loot = {
 }
 
 monster.attacks = {
-	{name ="melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -15}
+	{name ="melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -9}
 }
 
 monster.defenses = {
