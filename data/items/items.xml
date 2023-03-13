@@ -43513,7 +43513,7 @@
 	<item id="30224" name="rush wood"/>
 	<item id="30225" name="earth ground"/>
 	<item id="30226" article="a" name="branch">
-		<attribute key="weight" value="100000"/>
+		<attribute key="weight" value="30000"/>
 	</item>
 	<item id="30227" article="a" name="festive filled shoes">
 		<attribute key="wrapableto" value="23398"/>
