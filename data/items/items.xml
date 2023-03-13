@@ -22843,19 +22843,22 @@
 	</item>
 	<item fromid="12666" toid="12668" name="water pump"/>
 	<item id="12669" article="a" name="star ring">
-		<attribute key="description" value="If you wear it on your ring slot, it will boost your health regeneration when you're not hungry"/>
+		<attribute key="description" value="Forged with magic, it contains the beauty of a bright star."/>
 		<attribute key="stopduration" value="1"/>
 		<attribute key="showduration" value="1"/>
-		<attribute key="showAttributes" value="1"/>
 		<attribute key="transformequipto" value="12670"/>
 		<attribute key="weight" value="80"/>
 	</item>
 	<!-- wihout vocation -->
 	<item id="12670" article="a" name="star ring">
-		<attribute key="description" value="If you wear it on your ring slot, it will boost your health regeneration when you're not hungry"/>
+		<attribute key="description" value="Forged with magic, it contains the beauty of a bright star."/>
 		<attribute key="showduration" value="1"/>
 		<attribute key="showAttributes" value="1"/>
-		<attribute key="duration" value="600"/>
+		<attribute key="manaticks" value="2000"/>
+		<attribute key="managain" value="1"/>
+		<attribute key="healthticks" value="2000"/>
+		<attribute key="healthgain" value="1"/>
+		<attribute key="duration" value="1800"/>
 		<attribute key="transformdeequipto" value="12669"/>
 		<attribute key="decayTo" value="0"/>
 		<attribute key="weight" value="80"/>
@@ -22865,8 +22868,7 @@
 		<attribute key="weight" value="1000"/>
 	</item>
 	<item id="12672" name="skinning knife">
-		<attribute key="description" value="Use this knife on a dead war wolf to retrieve some leather. Don't lose it and don't leave the cave"/>
-		<attribute key="weight" value="800"/>
+'	<attribute key="weight" value="800"/>
 	</item>
 	<item id="12673" article="a" name="wooden sword">
 		<attribute key="weaponType" value="sword"/>
