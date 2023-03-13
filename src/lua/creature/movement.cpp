@@ -12,6 +12,7 @@
 #include "game/game.h"
 #include "lua/creature/events.h"
 #include "lua/creature/movement.h"
+#include "items/weapons/weapons.h"
 
 void MoveEvents::clear() {
 	uniqueIdMap.clear();
@@ -486,7 +487,13 @@ uint32_t MoveEvent::EquipItem(MoveEvent* moveEvent, Player* player, Item* item, 
 
 	if (!player->hasFlag(PlayerFlags_t::IgnoreWeaponCheck) && moveEvent->getWieldInfo() != 0) {
 		if (player->getLevel() < moveEvent->getReqLevel() || player->getMagicLevel() < moveEvent->getReqMagLv()) {
-			return 0;
+			const Weapon* weapon = g_weapons().getWeapon(item);
+			if(!weapon){
+				return 0;
+			}
+			if (weapon->isWieldedUnproperly() != true) {
+				return 0;
+			}
 		}
 
 		if (moveEvent->isPremium() && !player->isPremium()) {
