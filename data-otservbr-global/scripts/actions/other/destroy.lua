@@ -50,9 +50,6 @@ end
 for id = 3309, 3341 do
 	destroy:id(id)
 end
-destroy:id(3293) -- sickle
 destroy:id(3294) -- short sword
-destroy:id(3304) -- crowbar
-destroy:id(3308) -- machete
 
 destroy:register()
