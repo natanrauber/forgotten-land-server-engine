@@ -5611,7 +5611,7 @@
 	</item>
 	<item id="3264" article="a" name="sword">
 		<attribute key="weaponType" value="sword"/>
-		<attribute key="attack" value="14"/>
+		<attribute key="attack" value="15"/>
 		<attribute key="extradef" value="1"/>
 		<attribute key="defense" value="12"/>
 		<attribute key="weight" value="3500"/>
@@ -5794,7 +5794,7 @@
 	</item>
 	<item id="3286" article="a" name="mace">
 		<attribute key="weaponType" value="club"/>
-		<attribute key="attack" value="16"/>
+		<attribute key="attack" value="15"/>
 		<attribute key="defense" value="11"/>
 		<attribute key="weight" value="3800"/>
 	</item>
@@ -6279,7 +6279,7 @@
 	<item id="3336" article="a" name="studded club">
 		<attribute key="description" value="It has been reinforced with iron"/>
 		<attribute key="weaponType" value="club"/>
-		<attribute key="attack" value="9"/>
+		<attribute key="attack" value="10"/>
 		<attribute key="defense" value="8"/>
 		<attribute key="weight" value="3500"/>
 	</item>
