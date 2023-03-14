@@ -88,7 +88,6 @@ monster.loot = {
 	{id = 3264, chance = 5000}, -- sword
 	{name = "mace", chance = 5000},
 	{name = "hatchet", chance = 5000},
-	{name = "plate shield", chance = 2000},
 	{name = "chain armor", chance = 2000},
 	{name = "chain legs", chance = 2000},
 	{name = "chain helmet", chance = 2000}
