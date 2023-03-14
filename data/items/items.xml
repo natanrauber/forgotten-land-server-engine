@@ -6431,7 +6431,7 @@
 		<attribute key="weight" value="4600"/>
 	</item>
 	<item id="3352" article="a" name="chain helmet">
-		<attribute key="armor" value="2"/>
+		<attribute key="armor" value="3"/>
 		<attribute key="weight" value="4200"/>
 		<attribute key="imbuementslot" value="1">
 			<attribute key="mana leech" value="3"/>
@@ -6447,7 +6447,7 @@
 		<attribute key="weight" value="3000"/>
 	</item>
 	<item id="3354" article="a" name="brass helmet">
-		<attribute key="armor" value="3"/>
+		<attribute key="armor" value="4"/>
 		<attribute key="weight" value="2700"/>
 	</item>
 	<item id="3355" article="a" name="leather helmet">
