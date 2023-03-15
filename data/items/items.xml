@@ -55720,4 +55720,14 @@
 		<attribute key="wrapableto" value="23398"/>
 		<attribute key="description" value="She is enjoying her bath between the lily pads"/>
 	</item>
+	<item id="50144" article="a" name="plum tree"/>
+	<item id="50145" article="a" name="plum tree">
+		<attribute key="duration" value="600"/>
+		<attribute key="decayTo" value="50144"/>
+	</item>
+	<item id="50146" article="a" name="pear tree"/>
+	<item id="50147" article="a" name="pear tree">
+		<attribute key="duration" value="600"/>
+		<attribute key="decayTo" value="50146"/>
+	</item>
 </items>
