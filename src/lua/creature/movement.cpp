@@ -518,6 +518,7 @@ uint32_t MoveEvent::EquipItem(MoveEvent* moveEvent, Player* player, Item* item, 
 	}
 
 	for (uint8_t slotid = 0; slotid < item->getImbuementSlot(); slotid++) {
+		player->updateImbuementTrackerStats();
 		ImbuementInfo imbuementInfo;
 		if (!item->getImbuementInfo(slotid, &imbuementInfo)) {
 			continue;
@@ -614,6 +615,7 @@ uint32_t MoveEvent::DeEquipItem(MoveEvent*, Player* player, Item* item, Slots_t 
 	}
 
 	for (uint8_t slotid = 0; slotid < item->getImbuementSlot(); slotid++) {
+		player->updateImbuementTrackerStats();
 		ImbuementInfo imbuementInfo;
 		if (!item->getImbuementInfo(slotid, &imbuementInfo)) {
 			continue;

@@ -55,6 +55,13 @@ class MonsterFunctions final : LuaScriptInterface {
 			registerMethod(L, "Monster", "clearFiendishStatus", MonsterFunctions::luaMonsterClearFiendishStatus);
 			registerMethod(L, "Monster", "isForgeable", MonsterFunctions::luaMonsterIsForgeable);
 
+			registerMethod(L, "Monster", "getName", MonsterFunctions::luaMonsterGetName);
+
+			registerMethod(L, "Monster", "hazard", MonsterFunctions::luaMonsterHazard);
+			registerMethod(L, "Monster", "hazardCrit", MonsterFunctions::luaMonsterHazardCrit);
+			registerMethod(L, "Monster", "hazardDodge", MonsterFunctions::luaMonsterHazardDodge);
+			registerMethod(L, "Monster", "hazardDamageBoost", MonsterFunctions::luaMonsterHazardDamageBoost);
+
 			CharmFunctions::init(L);
 			LootFunctions::init(L);
 			MonsterSpellFunctions::init(L);
@@ -105,6 +112,13 @@ class MonsterFunctions final : LuaScriptInterface {
 		static int luaMonsterConfigureForgeSystem(lua_State* L);
 		static int luaMonsterClearFiendishStatus(lua_State* L);
 		static int luaMonsterIsForgeable(lua_State* L);
+
+		static int luaMonsterGetName(lua_State* L);
+
+		static int luaMonsterHazard(lua_State* L);
+		static int luaMonsterHazardCrit(lua_State* L);
+		static int luaMonsterHazardDodge(lua_State* L);
+		static int luaMonsterHazardDamageBoost(lua_State* L);
 
 		friend class CreatureFunctions;
 };

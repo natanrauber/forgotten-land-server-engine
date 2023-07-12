@@ -34,6 +34,7 @@ function Monster:onDropLoot(corpse)
 	if not player or player:getStamina() > 840 then
 		local monsterLoot = mType:getLoot()
 		local charmBonus = false
+		local hazardMsg = false
 		if player and mType and mType:raceId() > 0 then
 			local charm = player:getCharmMonsterType(CHARM_GUT)
 			if charm and charm:raceId() == mType:raceId() then
@@ -47,6 +48,17 @@ function Monster:onDropLoot(corpse)
 				local itemBoosted = corpse:createLootItem(monsterLoot[i], charmBonus)
 				if not itemBoosted then
 					Spdlog.warn(string.format("[1][Monster:onDropLoot] - Could not add loot item to boosted monster: %s, from corpse id: %d.", self:getName(), corpse:getId()))
+				end
+			end
+			if self:hazard() and player ~= nil then
+				local chanceTo = math.random(1, 100)
+				if chanceTo <= (2 * player:getHazardSystemPoints() * configManager.getNumber(configKeys.HAZARDSYSTEM_LOOT_BONUS_MULTIPLIER)) then
+					local podItem = corpse:createLootItem(monsterLoot[i], charmBonus, preyChanceBoost)
+					if not podItem then
+						Spdlog.warn(string.format("[Monster:onDropLoot] - Could not add loot item to hazard monster: %s, from corpse id: %d.", self:getName(), corpse:getId()))
+					else
+						hazardMsg = true
+					end
 				end
 			end
 			if not item then
@@ -97,27 +109,32 @@ function Monster:onDropLoot(corpse)
 				end
 			end
 
+			local contentDescription = corpse:getContentDescription(player:getClient().version < 1200)
+
 			local text = {}
 			if corpse:getContentDescription() ~= "nothing" then
-				if self:getName():lower() == (Game.getBoostedCreature()):lower() then
-					text = ("Loot of %s: %s (boosted loot)"):format(mType:getNameDescription(), corpse:getContentDescription())
-				elseif boostedMessage then
-					text = ("Loot of %s: %s (Boss bonus)"):format(mType:getNameDescription(), corpse:getContentDescription())
-				else
-					text = ("Loot of %s: %s"):format(mType:getNameDescription(), corpse:getContentDescription())
-				end
-				if preyLootPercent > 0 then
-					text = text .. " (active prey bonus)"
-				end
-				if charmBonus then
-					text = text .. " (active charm bonus)"
-				end
-				local party = player:getParty()
-				if party then
-					party:broadcastPartyLoot(text)
-				else
-					player:sendTextMessage(MESSAGE_LOOT, text)
-				end
+			if self:getName():lower() == (Game.getBoostedCreature()):lower() then
+				text = ("Loot of %s: %s (boosted loot)"):format(mType:getNameDescription(), contentDescription)
+			elseif boostedMessage then
+				text = ("Loot of %s: %s (Boss bonus)"):format(mType:getNameDescription(), contentDescription)
+			else
+				text = ("Loot of %s: %s"):format(mType:getNameDescription(), contentDescription)
+			end
+			if preyLootPercent > 0 then
+				text = text .. " (active prey bonus)"
+			end
+			if charmBonus then
+				text = text .. " (active charm bonus)"
+			end
+			if hazardMsg then
+				text = text .. " (Hazard system)"
+			end
+			local party = player:getParty()
+			if party then
+				party:broadcastPartyLoot(text)
+			else
+				player:sendTextMessage(MESSAGE_LOOT, text)
+			end
 			end
 			player:updateKillTracker(self, corpse)
 		end
@@ -133,6 +150,8 @@ function Monster:onDropLoot(corpse)
 end
 
 function Monster:onSpawn(position)
+	HazardMonster.onSpawn(self, position)
+
 	if self:getType():isRewardBoss() then
 		self:setReward(true)
 	end

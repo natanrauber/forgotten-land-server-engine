@@ -46,7 +46,7 @@ class ItemProperties {
 					std::numeric_limits<T>::max()
 				);
 			}
-			SPDLOG_ERROR("Failed to convert attribute for type {}", type);
+			SPDLOG_ERROR("Failed to convert attribute for type {}", fmt::underlying(type));
 			return {};
 		}
 
@@ -126,6 +126,10 @@ class ItemProperties {
 			}
 		}
 
+		bool isStoreItem() const {
+			return getAttribute<int64_t>(ItemAttribute_t::STORE) > 0;
+		}
+
 		void setDuration(int32_t time) {
 			setAttribute(ItemAttribute_t::DURATION, std::max<int32_t>(0, time));
 		}
@@ -169,14 +173,6 @@ class ItemProperties {
 			return attributePtr;
 		}
 
-		const std::underlying_type_t<ItemAttribute_t> &getAttributeBits() const {
-			static std::underlying_type_t<ItemAttribute_t> emptyType = {};
-			if (!attributePtr) {
-				return emptyType;
-			}
-
-			return attributePtr->getAttributeBits();
-		}
 		const std::vector<Attributes> &getAttributeVector() const {
 			static std::vector<Attributes> emptyVector = {};
 			if (!attributePtr) {
@@ -220,9 +216,9 @@ class ItemProperties {
 class Item : virtual public Thing, public ItemProperties {
 	public:
 		// Factory member to create item of right type based on type
-		static Item* CreateItem(const uint16_t type, uint16_t count = 0);
+		static Item* CreateItem(const uint16_t type, uint16_t count = 0, Position* itemPosition = nullptr);
 		static Container* CreateItemAsContainer(const uint16_t type, uint16_t size);
-		static Item* CreateItem(PropStream &propStream);
+		static Item* CreateItem(uint16_t itemId, Position &itemPosition);
 		static Items items;
 
 		// Constructor for items
@@ -280,6 +276,8 @@ class Item : virtual public Thing, public ItemProperties {
 			return nullptr;
 		}
 
+		SoundEffect_t getMovementSound(Cylinder* toCylinder) const;
+
 		void setIsLootTrackeable(bool value) {
 			isLootTrackeable = value;
 		}
@@ -306,7 +304,7 @@ class Item : virtual public Thing, public ItemProperties {
 		// serialization
 		virtual Attr_ReadValue readAttr(AttrTypes_t attr, PropStream &propStream);
 		bool unserializeAttr(PropStream &propStream);
-		virtual bool unserializeItemNode(OTB::Loader &, const OTB::Node &, PropStream &propStream);
+		virtual bool unserializeItemNode(OTB::Loader &, const OTB::Node &, PropStream &propStream, Position &itemPosition);
 
 		virtual void serializeAttr(PropWriteStream &propWriteStream) const;
 
@@ -442,6 +440,9 @@ class Item : virtual public Thing, public ItemProperties {
 		bool isQuiver() const {
 			return items[id].isQuiver();
 		}
+		bool isSpellBook() const {
+			return items[id].isSpellBook();
+		}
 
 		const std::string &getName() const {
 			if (hasAttribute(ItemAttribute_t::NAME)) {
@@ -462,8 +463,19 @@ class Item : virtual public Thing, public ItemProperties {
 			return items[id].article;
 		}
 
+		uint8_t getStackSize() const {
+			if (isStackable()) {
+				return items[id].stackSize;
+			}
+			return 1;
+		}
+
 		// get the number of items
 		uint16_t getItemCount() const {
+			return count;
+		}
+		// Get item total amount
+		uint32_t getItemAmount() const {
 			return count;
 		}
 		void setItemCount(uint8_t n) {
