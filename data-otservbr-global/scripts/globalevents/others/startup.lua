@@ -48,6 +48,7 @@ function serverstartup.onStartup()
 	CreateMapItem(CreateItemOnMap)
 	-- Update old quest storage keys
 	updateKeysStorage(QuestKeysUpdate)
+	ConvertTrees()
 
 	Spdlog.info("Loaded all actions in the map")
 	Spdlog.info("Loaded all uniques in the map")
