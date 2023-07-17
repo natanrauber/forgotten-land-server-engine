@@ -30,7 +30,6 @@ local fruits = {
 
 -- [ON USE TREE]
 local tree = Action()
-
 function tree.onUse(player, item, fromPosition, target, toPosition)
     local tree = trees[item.itemid]
 
@@ -45,15 +44,16 @@ function tree.onUse(player, item, fromPosition, target, toPosition)
     local changeTo = tree[9]
     local condition = player:getCondition(CONDITION_REGENERATION, CONDITIONID_DEFAULT)
 
-    if not drop or not fruit or not dropMaxCount or not dropChance or not changeTo or not condition then
+    if not drop or not fruit or not dropMaxCount or not dropChance or not changeTo then
         return false
     end
 
-    local full = math.floor(condition:getTicks() / 1000 + (fruit[1] * dropMaxCount * 12)) >= 1800
-
-    if full then
-        player:sendTextMessage(MESSAGE_FAILURE, "You are full.")
-        return true
+    if condition then
+        local full = math.floor(condition:getTicks() / 1000 + (fruit[1] * dropMaxCount * 12)) >= 1800
+        if full then
+            player:sendTextMessage(MESSAGE_FAILURE, "You are full.")
+            return true
+        end
     end
 
     item:transform(changeTo)
@@ -62,15 +62,15 @@ function tree.onUse(player, item, fromPosition, target, toPosition)
     for i = 1, math.random(dropMaxCount) do
         player:feed(fruit[1] * 12)
         player:say(fruit[2], TALKTYPE_MONSTER_SAY)
+        player:getPosition():sendSingleSoundEffect(SOUND_EFFECT_TYPE_ACTION_EAT)
     end
 
     return true
 end
 
-for k, v in pairs(trees) do
-    local drop = v[6]
-    if drop then
-        tree:id(k)
+for key, value in pairs(trees) do
+    if value[6] then
+        tree:id(key)
     end
 end
 tree:register()
