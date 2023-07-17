@@ -29,8 +29,8 @@ monster.outfit = {
 monster.health = 50
 monster.maxHealth = 50
 monster.race = "blood"
-monster.corpse = 13513
-monster.speed = 200
+monster.corpse = 12524
+monster.speed = 150
 monster.manaCost = 260
 monster.maxSummons = 0
 
@@ -46,7 +46,7 @@ monster.strategiesTarget = {
 monster.flags = {
     summonable = false,
     attackable = true,
-    hostile = false,
+    hostile = true,
     convinceable = false,
     pushable = false,
     rewardBoss = false,
@@ -55,7 +55,7 @@ monster.flags = {
     canPushCreatures = true,
     staticAttackChance = 90,
     targetDistance = 1,
-    runHealth = 50,
+    runHealth = 10,
     healthHidden = false,
     isBlockable = false,
     canWalkOnEnergy = false,
@@ -82,7 +82,7 @@ monster.loot = {
 }
 
 monster.attacks = {
-    {name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = 0}
+    {name = "melee", interval = 2000, chance = 100, minDamage = 0, maxDamage = -5}
 }
 
 monster.defenses = {
