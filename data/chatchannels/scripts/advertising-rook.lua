@@ -1,3 +1,5 @@
+local mutedStorage = 456113
+
 function canJoin(player)
 	return player:getVocation():getId() == VOCATION_NONE or player:getAccountType() >= ACCOUNT_TYPE_SENIORTUTOR
 end
@@ -9,6 +11,11 @@ muted:setParameter(CONDITION_PARAM_SUBID, CHANNEL_ADVERTISING_ROOK)
 muted:setParameter(CONDITION_PARAM_TICKS, 120000)
 
 function onSpeak(player, type, message)
+	if player:getStorageValue(mutedStorage) > os.time() then
+		player:sendCancelMessage("You are muted from this channel.")
+		return false
+	end
+
 	if player:getAccountType() >= ACCOUNT_TYPE_GAMEMASTER then
 		if type == TALKTYPE_CHANNEL_Y then
 			return TALKTYPE_CHANNEL_O

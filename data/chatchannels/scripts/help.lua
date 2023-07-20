@@ -1,11 +1,17 @@
 local CHANNEL_HELP = 7
 local storage = 456112
+local mutedStorage = 456113
 
 local muted = Condition(CONDITION_CHANNELMUTEDTICKS, CONDITIONID_DEFAULT)
 muted:setParameter(CONDITION_PARAM_SUBID, CHANNEL_HELP)
 muted:setParameter(CONDITION_PARAM_TICKS, 3600000)
 
 function onSpeak(player, type, message)
+	if player:getStorageValue(mutedStorage) > os.time() then
+		player:sendCancelMessage("You are muted from this channel.")
+		return false
+	end
+
 	local playerAccountType = player:getAccountType()
 	if player:getLevel() == 1 and playerAccountType == ACCOUNT_TYPE_NORMAL then
 		player:sendCancelMessage("You may not speak into channels as long as you are on level 1.")
