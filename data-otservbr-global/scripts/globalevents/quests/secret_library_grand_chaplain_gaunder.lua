@@ -32,4 +32,4 @@ function chaplaingaunder.onThink(interval, lastExecution)
 end
 
 chaplaingaunder:interval(900000)
-chaplaingaunder:register()
+-- chaplaingaunder:register()

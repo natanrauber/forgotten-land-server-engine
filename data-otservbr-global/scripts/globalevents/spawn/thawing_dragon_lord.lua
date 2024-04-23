@@ -32,4 +32,4 @@ function thawingDragonLord.onThink(interval, lastExecution)
 end
 
 thawingDragonLord:interval(900000)
-thawingDragonLord:register()
+-- thawingDragonLord:register()

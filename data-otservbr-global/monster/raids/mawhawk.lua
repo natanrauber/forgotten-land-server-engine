@@ -136,4 +136,4 @@ end
 mType.onSay = function(monster, creature, type, message)
 end
 
-mType:register(monster)
+-- mType:register(monster)

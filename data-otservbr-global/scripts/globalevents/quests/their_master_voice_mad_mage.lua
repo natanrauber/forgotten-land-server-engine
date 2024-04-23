@@ -22,4 +22,4 @@ function mad.onThink(interval, lastExecution)
 end
 
 mad:interval(14400000)
-mad:register()
+-- mad:register()

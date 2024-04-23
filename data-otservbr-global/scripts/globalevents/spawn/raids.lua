@@ -68,4 +68,4 @@ function spawnRaids.onThink(interval, lastExecution, thinkInterval)
 end
 
 spawnRaids:interval(60000)
-spawnRaids:register()
+-- spawnRaids:register()

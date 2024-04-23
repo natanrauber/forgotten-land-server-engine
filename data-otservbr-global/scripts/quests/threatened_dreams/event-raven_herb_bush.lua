@@ -45,7 +45,7 @@ function createRavenHerb.onPeriodChange(period, light)
 	return true
 end
 
-createRavenHerb:register()
+-- createRavenHerb:register()
 
 
 local ravenHerb = Action()
@@ -76,4 +76,4 @@ function ravenHerb.onUse(player, item, fromPosition, target, toPosition, isHotke
 end
 
 ravenHerb:aid(ThreatenedDreams.Mission03.RavenHerbTimer)
-ravenHerb:register()
+-- ravenHerb:register()

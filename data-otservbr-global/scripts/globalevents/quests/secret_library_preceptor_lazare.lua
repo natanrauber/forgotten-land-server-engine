@@ -31,4 +31,4 @@ function preceptorLazare.onThink(interval, lastExecution)
 end
 
 preceptorLazare:interval(900000)
-preceptorLazare:register()
+-- preceptorLazare:register()
