@@ -23,11 +23,11 @@ local playerLogin = CreatureEvent("PlayerLogin")
 function playerLogin.onLogin(player)
 	local items = {
 		{3003, 1},
-		{3031, 3}
+		-- {3031, 3}
 	}
 	if player:getLastLoginSaved() == 0 then
-		player:teleportTo({x = 31975, y = 32277, z = 7})
-		player:teleportTo({x = 31976, y = 32277, z = 7})
+		player:teleportTo({x = 31928, y=32258, z=7})
+		player:teleportTo({x = 31929, y=32258, z = 7})
 		player:sendOutfitWindow()
 		local backpack = player:addItem(2854)
 		if backpack then
