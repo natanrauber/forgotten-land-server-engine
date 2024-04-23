@@ -755,8 +755,8 @@ bool Creature::dropCorpse(Creature* lastHitCreature, Creature* mostDamageCreatur
 					if (money > 0) {
 						player->setBankBalance(player->getBankBalance() + money);
 						std::ostringstream ss;
-						ss << "Added " << money << " gold coins to your bank account.";
-						player->sendTextMessage(MESSAGE_STATUS, ss.str());
+						ss << "You looted " << money << " gold coins.";
+						player->sendTextMessage(MESSAGE_LOOT, ss.str());
 					}
 				}
 
