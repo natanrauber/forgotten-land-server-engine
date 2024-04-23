@@ -87,6 +87,11 @@ local fluid = Action()
 
 function fluid.onUse(player, item, fromPosition, target, toPosition, isHotkey)
 	local targetType = ItemType(target.itemid)
+	
+	if target.actionid == 9990 then
+		return false
+	end
+
 	if targetType:isFluidContainer() then
 		if target.type == 0 and item.type ~= 0 then
 			target:transform(target.itemid, item.type)
