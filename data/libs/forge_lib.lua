@@ -95,9 +95,8 @@ function ForgeMonster:onDeath(creature, corpse, killer, mostDamageKiller, unjust
 								" for the Exaltation Forge. You now have " .. actualTotalDusts .. " out of a maximum of " ..
 								limitDusts .. " dusts.")
 					else
-						playerKiller:sendTextMessage(MESSAGE_EVENT_ADVANCE,
-							"You did not receive " .. amount .. " dust" ..
-								" for the Exaltation Forge because you have already reached the maximum of " .. limitDusts .. " dust.")
+						playerKiller:sendTextMessage(MESSAGE_FAILURE,
+							"You have reached the maximum of dust for the Exaltation Forge.")
 					end
 				end
 			end
@@ -134,9 +133,8 @@ function ForgeMonster:onDeath(creature, corpse, killer, mostDamageKiller, unjust
 							" for the Exaltation Forge. You now have " .. actualTotalDusts .. " out of a maximum of " ..
 							limitDusts .. " dusts.")
 				else
-					playerKiller:sendTextMessage(MESSAGE_EVENT_ADVANCE,
-						"You did not receive " .. amount .. " dust" ..
-							" for the Exaltation Forge because you have already reached the maximum of " .. limitDusts .. " dust.")
+					playerKiller:sendTextMessage(MESSAGE_FAILURE,
+						"You have reached the maximum of dust for the Exaltation Forge.")
 				end
 			end
 		end
