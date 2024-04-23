@@ -28,7 +28,6 @@
 	The "for use of the script" variables are used by the scripts
 	To allow a single script to manage all rewards
 ]]
-
 ChestAction = {
 	--[[
 	-- Example of usage
@@ -52,7 +51,8 @@ ChestAction = {
 		}
 	},
 	-- The New Frontier Quest
-	[5001] = { -- Reward Outfit
+	[5001] = {
+		-- Reward Outfit
 		itemId = 5862,
 		itemPos = {
 			{x = 33053, y = 31020, z = 7}
@@ -88,7 +88,8 @@ ChestUnique = {
 		storage = Storage.Quest.Key.ID0010
 	},
 	-- Emperor's cookies quest
-	[5003] = { --  key 3800
+	[5003] = {
+		--  key 3800
 		isKey = true,
 		itemId = 2472,
 		itemPos = {x = 32605, y = 31908, z = 3},
@@ -96,7 +97,8 @@ ChestUnique = {
 		storage = Storage.Quest.Key.ID3800
 	},
 	-- Emperor's cookies quest
-	[5004] = { -- bag with cookies and key 3801
+	[5004] = {
+		-- bag with cookies and key 3801
 		isKey = true,
 		itemId = 2472,
 		itemPos = {x = 32648, y = 31905, z = 3},
@@ -107,7 +109,8 @@ ChestUnique = {
 		keyAction = Storage.Quest.Key.ID3801
 	},
 	-- Emperor's cookies quest
-	[5005] = { --  key 3802
+	[5005] = {
+		--  key 3802
 		isKey = true,
 		itemId = 2472,
 		itemPos = {x = 32599, y = 31923, z = 6},
@@ -259,7 +262,7 @@ ChestUnique = {
 	-- Book
 	[6013] = {
 		itemId = 2472,
-		itemPos = {x = 32171, y = 32197, z = 7},
+		itemPos = {x = 32116, y = 32176, z = 7},
 		reward = {{2821, 1}},
 		storage = Storage.Quest.PreU6_0.ShortSword.Rewards.Book
 	},
@@ -278,21 +281,21 @@ ChestUnique = {
 		reward = {{3421, 1}},
 		storage = Storage.Quest.PreU6_0.ThaisLighthouse.DarkShield
 	},
-	-- Studded shield quest (rookgaard)
-	-- Banana free account area
-	[6016] = {
-		itemId = 3639,
-		itemPos = {x = 32172, y = 32169, z = 7},
-		reward = {{3587, 1}},
-		storage = Storage.Quest.U6_0.StuddedShield.Rewards.BananaFree
-	},
-	-- Banana premium account area
-	[6017] = {
-		itemId = 3639,
-		itemPos = {x = 31983, y = 32193, z = 5},
-		reward = {{3587, 1}},
-		storage = Storage.Quest.U6_0.StuddedShield.Rewards.BananaPremium
-	},
+	-- -- Studded shield quest (rookgaard)
+	-- -- Banana free account area
+	-- [6016] = {
+	-- 	itemId = 3639,
+	-- 	itemPos = {x = 32172, y = 32169, z = 7},
+	-- 	reward = {{3587, 1}},
+	-- 	storage = Storage.Quest.U6_0.StuddedShield.Rewards.BananaFree
+	-- },
+	-- -- Banana premium account area
+	-- [6017] = {
+	-- 	itemId = 3639,
+	-- 	itemPos = {x = 31983, y = 32193, z = 5},
+	-- 	reward = {{3587, 1}},
+	-- 	storage = Storage.Quest.U6_0.StuddedShield.Rewards.BananaPremium
+	-- },
 	-- Explorer brooch quest (kazordoon)
 	[6019] = {
 		itemId = 4240,
@@ -618,7 +621,7 @@ ChestUnique = {
 		itemPos = {x = 32778, y = 32282, z = 11},
 		container = 2853,
 		keyAction = Storage.Quest.Key.ID3702,
-		reward = {{2971,1}, {3509, 1}, {3351, 1}, {3424, 1}, {2821, 1}, {3271, 1}, {3085, 1}, {3048, 1}},
+		reward = {{2971, 1}, {3509, 1}, {3351, 1}, {3424, 1}, {2821, 1}, {3271, 1}, {3085, 1}, {3048, 1}},
 		weight = 194,
 		storage = Storage.Quest.PreU6_0.OrnamentedShield.Rewards.OrnamentedShield
 	},
@@ -626,7 +629,7 @@ ChestUnique = {
 		itemId = 2480,
 		itemPos = {x = 32769, y = 32302, z = 10},
 		container = 2859,
-		reward = {{2949, 1}, {3059, 1}, {3083, 1}, {3035, 5} , {3053, 1}},
+		reward = {{2949, 1}, {3059, 1}, {3083, 1}, {3035, 5}, {3053, 1}},
 		weight = 44,
 		storage = Storage.Quest.PreU6_0.OrnamentedShield.Rewards.TimeRing
 	},
@@ -922,21 +925,24 @@ ChestUnique = {
 		weight = 13.00,
 		storage = Storage.Quest.U11_40.ThreatenedDreams.Mission01.PoacherChest
 	},
-	[6101] = { -- Dark Moon Mirror
+	[6101] = {
+		-- Dark Moon Mirror
 		itemId = 25762,
 		itemPos = {x = 33594, y = 32214, z = 9},
 		reward = {{25729, 1}},
 		weight = 2.00,
 		storage = Storage.Quest.U11_40.ThreatenedDreams.Mission02.DarkMoonMirror
 	},
-	[6102] = { -- Ape city
+	[6102] = {
+		-- Ape city
 		itemId = 2469,
 		itemPos = {x = 32782, y = 32910, z = 8},
 		reward = {{4827, 1}},
 		weight = 0.20,
 		storage = Storage.QuestChests.WhisperMoss
 	},
-	[6103] = { -- Ape city
+	[6103] = {
+		-- Ape city
 		itemId = 2473,
 		itemPos = {x = 32935, y = 32886, z = 7},
 		reward = {{4831, 1}},
