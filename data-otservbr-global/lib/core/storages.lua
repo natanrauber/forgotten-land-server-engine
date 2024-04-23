@@ -1355,6 +1355,7 @@ Storage = {
 		TutorialHintsStorage = 51665,
 		SantiagoNpcGreetStorage = 51666,
 		SantiagoQuestLog = 51667,
+		SantiagoTorchQuest = 51668,
 		-- unused cockroachKillStorage = 51668,
 		-- unused cockroachLegsMsgStorage = 51669,
 		-- unused cockroachBodyMsgStorage = 51670,
@@ -1469,7 +1470,8 @@ Storage = {
 		WhisperMoss = 51766,
 		OldParchment = 51767,
 		DragahsSpellbook = 51768,
-		StealFromThieves = 51769
+		StealFromThieves = 51769,
+		CoconutPalm = 51770,
 	},
 	PitsOfInferno = {
 		-- Reserved storage from 52000 - 52019
