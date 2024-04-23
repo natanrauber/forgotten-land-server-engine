@@ -39,7 +39,7 @@ cleanProtectionZones = false
 -- NOTE: allowOldProtocol can allow login on 10x protocol. (11.00)
 -- NOTE: maxPlayers set to 0 means no limit
 -- NOTE: MaxPacketsPerSeconds if you change you will be subject to bugs by WPE, keep the default value of 25
-ip = "127.0.0.1"
+ip = "172.174.203.18"
 allowOldProtocol = false
 bindOnlyGlobalAddress = false
 loginProtocolPort = 7171
@@ -72,7 +72,7 @@ depotBoxes = 20
 -- NOTE: preyBonusTime: Time in seconds that players will have of prey bonus.
 -- NOTE: preyFreeRerollTime: Time in seconds that players will have to wait to get a new free prey list.
 preySystemEnabled = true
-preyFreeThirdSlot = false
+preyFreeThirdSlot = true
 preyRerollPricePerLevel = 200
 preySelectListPrice = 5
 preyBonusRerollPrice = 1
@@ -84,7 +84,7 @@ preyFreeRerollTime = 20 * 60 * 60
 -- NOTE: taskHuntingRerollPricePerLevel: Price multiplier in gold coin for rerolling task hunting list.
 -- NOTE: taskHuntingFreeRerollTime: Time in seconds that players will have to wait to get a new free task hunting list.
 taskHuntingSystemEnabled = true
-taskHuntingFreeThirdSlot = false
+taskHuntingFreeThirdSlot = true
 taskHuntingLimitedTasksExhaust = 20 * 60 * 60
 taskHuntingRerollPricePerLevel = 200
 taskHuntingSelectListPrice = 5
@@ -178,7 +178,7 @@ thunderEffect = false
 allConsoleLog = false
 stashMoving = false
 depotChest = 4
-autoLoot = false
+autoLoot = true
 autoBank = true
 toggleGoldPouchAllowAnything = false
 toggleGoldPouchQuickLootOnly = false
@@ -213,7 +213,7 @@ maxAllowedOnADummy = 1
 -- NOTE: saveIntervalTime: time based on what was set in "saveIntervalType"
 toggleSaveInterval = true
 saveIntervalType = "minute"
-toggleSaveIntervalCleanMap = true
+toggleSaveIntervalCleanMap = false
 saveIntervalTime = 15
 
 -- Imbuement
@@ -259,7 +259,7 @@ pushWhenAttacking = false
 -- NOTE: If toggleDownloadMap if false, then the mapDownloadUrl will not be used
 -- NOTE: If a map with the name already exists in the world folder, the map will not be downloaded even if the toggleDownloadMap is true
 toggleDownloadMap = true
-mapName = "otservbr"
+mapName = "forgottenland"
 mapDownloadUrl = "https://github.com/opentibiabr/canary/releases/download/v1.5.0/otservbr.otbm"
 mapAuthor = "OpenTibiaBR"
 
@@ -270,7 +270,7 @@ partyListMaxDistance = 30
 
 -- Custom Map
 -- NOTE: toggleMapCustom set to true will load all maps in custom map folder
-toggleMapCustom = true
+toggleMapCustom = false
 
 -- Market
 marketOfferDuration = 30 * 24 * 60 * 60
@@ -330,9 +330,9 @@ sortLootByChance = true
 -- To configure rates see file data/stages.lua
 -- lowLevelBonusExp works up to level 50
 rateUseStages = false
-lowLevelBonusExp = 1
-rateExp = 1
-rateSkill = 1
+lowLevelBonusExp = 0
+rateExp = 3
+rateSkill = 5
 rateLoot = 1
 rateMagic = 1
 rateSpawn = 1
@@ -360,8 +360,8 @@ rateMonsterAttack = 1.0
 rateMonsterDefense = 1.0
 
 -- Monsters
-deSpawnRange = 2
-deSpawnRadius = 50
+deSpawnRange = 0
+deSpawnRadius = 0
 
 -- Stamina
 staminaSystem = true
