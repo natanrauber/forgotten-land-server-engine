@@ -302,7 +302,7 @@ allowWalkthrough = false
 coinPacketSize = 5
 coinImagesURL = "http://127.0.0.1/images/store/"
 classicAttackSpeed = false
-showScriptsLogInConsole = true
+showScriptsLogInConsole = false
 -- configure maximum value of critical imbuement
 criticalChance = 10
 inventoryGlowOnFiveBless = false
