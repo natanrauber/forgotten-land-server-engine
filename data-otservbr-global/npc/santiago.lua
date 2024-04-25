@@ -28,8 +28,8 @@ npcConfig.voices = {
 	chance = 50,
 	{ text = 'Evil little beasts... I hope someone helps me fight them.' },
 	{ text = 'Nasty creepy crawlies!' },
-	{ text = 'Hey! You over there, could you help me with a little quest? Just say \'hi\' or \'hello\' to talk to me!' },
-	{ text = 'Don\'t be shy, can\'t hurt to greet me with \'hello\' or \'hi\'!' }
+	-- { text = 'Hey! You over there, could you help me with a little quest? Just say \'hi\' or \'hello\' to talk to me!' },
+	-- { text = 'Don\'t be shy, can\'t hurt to greet me with \'hello\' or \'hi\'!' }
 }
 
 local keywordHandler = KeywordHandler:new()
@@ -65,7 +65,10 @@ local function greetCallback(npc, creature)
 	local player = Player(creature)
 	local playerId = player:getId()
 
-	if player:getStorageValue(Storage.RookgaardTutorialIsland.SantiagoNpcGreetStorage) < 1 then
+	if true then
+		npcHandler:say("Hello adventurer, nice to see you on Rookgaard!", npc, creature)
+		return false
+	elseif player:getStorageValue(Storage.RookgaardTutorialIsland.SantiagoNpcGreetStorage) < 1 then
 		player:setStorageValue(Storage.RookgaardTutorialIsland.SantiagoNpcGreetStorage, 1)
 		player:setStorageValue(Storage.RookgaardTutorialIsland.SantiagoQuestLog, 1)
 		npcHandler:setMessage(MESSAGE_GREET, "Hello |PLAYERNAME|, nice to see you on Rookgaard! I saw you walking by and wondered if you could help me. Could you? Please, say {yes}!")
