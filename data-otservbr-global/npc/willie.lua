@@ -23,13 +23,15 @@ npcConfig.flags = {
 	floorchange = false
 }
 npcConfig.shop = {
-	{ itemName = "bread", clientId = 3600, sell = 1, count = 1 },
-	{ itemName = "cheese", clientId = 3607, sell = 2, count = 1 },
+	{ itemName = "bread", clientId = 3600, buy = 3, sell = 1, count = 1 },
+	{ itemName = "carrot", clientId = 3595, sell = 1, count = 1 },
+	{ itemName = "cheese", clientId = 3607, buy = 5, sell = 2, count = 1 },
 	{ itemName = "cherry", clientId = 3590, sell = 1, count = 1 },
 	{ itemName = "egg", clientId = 3606, sell = 1, count = 1 },
-	{ itemName = "ham", clientId = 3582, sell = 4, count = 1 },
-	{ itemName = "meat", clientId = 3577, sell = 2, count = 1 },
-	{ itemName = "salmon", clientId = 3579, sell = 2, count = 1 }
+	{ itemName = "ham", clientId = 3582, buy = 8, sell = 4, count = 1 },
+	{ itemName = "meat", clientId = 3577, buy = 5, sell = 2, count = 1 },
+	{ itemName = "salmon", clientId = 3579, sell = 2, count = 1 },
+	{ itemName = "veal", clientId = 32009, sell = 7, count = 1 }
 }
 
 -- On buy npc shop message
