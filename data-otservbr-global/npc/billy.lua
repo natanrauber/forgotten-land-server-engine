@@ -151,16 +151,18 @@ npcHandler:setMessage(MESSAGE_GREET, 'Howdy |PLAYERNAME|. I\'m a farmer and cook
 npcHandler:addModule(FocusModule:new(), npcConfig.name, true, true, true)
 
 npcConfig.shop = {
-	{ itemName = "bread", clientId = 3600, buy = 3, sell = 1 },
-	{ itemName = "carrot", clientId = 3595, sell = 1 },
-	{ itemName = "cheese", clientId = 3607, buy = 5, sell = 2 },
-	{ itemName = "cherry", clientId = 3590, sell = 1 },
+	{ itemName = "bread", clientId = 3600, buy = 3, sell = 1},
+	{ itemName = "carrot", clientId = 3595, sell = 1},
+	{ itemName = "cheese", clientId = 3607, buy = 5, sell = 2},
+	{ itemName = "cherry", clientId = 3590, sell = 1},
 	{ itemName = "dead rat", clientId = 3994, sell = 2 },
-	{ itemName = "egg", clientId = 3606, sell = 1 },
-	{ itemName = "ham", clientId = 3582, buy = 8, sell = 4 },
-	{ itemName = "meat", clientId = 3577, buy = 5, sell = 2 },
-	{ itemName = "salmon", clientId = 3579, sell = 2 }
+	{ itemName = "egg", clientId = 3606, sell = 1},
+	{ itemName = "ham", clientId = 3582, buy = 8, sell = 4},
+	{ itemName = "meat", clientId = 3577, buy = 5, sell = 2},
+	{ itemName = "salmon", clientId = 3579, sell = 2},
+	{ itemName = "veal", clientId = 32009, sell = 7}
 }
+
 -- On buy npc shop message
 npcType.onBuyItem = function(npc, player, itemId, subType, amount, ignore, inBackpacks, totalCost)
 	npc:sellItem(player, itemId, amount, subType, 0, ignore, inBackpacks)
