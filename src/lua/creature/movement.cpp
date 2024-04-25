@@ -488,7 +488,7 @@ uint32_t MoveEvent::EquipItem(MoveEvent* moveEvent, Player* player, Item* item, 
 	if (!player->hasFlag(PlayerFlags_t::IgnoreWeaponCheck) && moveEvent->getWieldInfo() != 0) {
 		if (player->getLevel() < moveEvent->getReqLevel() || player->getMagicLevel() < moveEvent->getReqMagLv()) {
 			const Weapon* weapon = g_weapons().getWeapon(item);
-			if(!weapon){
+			if (!weapon) {
 				return 0;
 			}
 			if (weapon->isWieldedUnproperly() != true) {
