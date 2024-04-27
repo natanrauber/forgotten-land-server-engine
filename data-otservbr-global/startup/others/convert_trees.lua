@@ -13,7 +13,7 @@ function ConvertTrees()
             if tile then
                 for k, v in pairs(trees) do
                     local tree = tile:getItemById(k)
-                    if tree and math.random(50) == 1 then
+                    if tree and math.random(5) == 1 then
                         tree:transform(v[1])
                         i = i + 1
                     end
