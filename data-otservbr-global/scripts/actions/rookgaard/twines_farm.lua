@@ -1,8 +1,8 @@
 local twinesFarm = Action()
 
-local t = {x = 32021, y = 32182, z = 5}
+local position = {x = 32021, y = 32182, z = 5}
 
-function twinesFarm.onUse(cid, item, position, fromPosition)
+function twinesFarm.onUse(cid)
     if getPlayerPosition(cid).y == 32183 then
         doTeleportThing(cid, position)
     end
